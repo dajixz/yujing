@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>宇景后台管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="/js/vue.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-body" id="layui">
+    <form id="form" class="layui-form">
+        <input hidden name="id" :value="caseKind.id">
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="x-red">*</span>案例名称
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" lay-verify="required"
+                      :value="caseKind.name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">
+                <span class="x-red">*</span>案例类型
+            </label>
+            <div class="layui-input-block">
+                <input name="type" disabled lay-verify="required" :value="caseKind.type" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>修改类型
+            </label>
+            <div class="layui-input-block">
+                <select id="type" name="type">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                案例图片
+            </label>
+            <div v-if="caseKind.imgList" >
+                <span v-for="img in caseKind.imgList">
+                    <img  style="width:100px;height: 100px" :src="img">&nbsp;&nbsp;
+                </span>
+            </div>
+            <button type="button" class="layui-btn" id="up">多图片覆盖</button>
+            <div id="div"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+            </label>
+            <button class="layui-btn" lay-filter="add" lay-submit="">
+                修改
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    layui.use(['layer', 'form','upload'], function () {
+        var layer = layui.layer,form=layui.form,upload=layui.upload;
+        var imgs="";
+        var app = new Vue({
+            el: '#layui',
+            data: {
+                caseKind:"",
+            },
+            beforeMount: function () {
+                var id = parent.layer.idnum;
+                this.getCaseKindById(id);
+            },
+            methods: {
+                getCaseKindById:function (id) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/case/getCaseKind',
+                        dataType: 'json',
+                        data: {
+                            id:id,
+                        },
+                        async: true,
+                        success: function (res) {
+                            if (res.code == 403) {
+                                layer.msg(res.msg)
+                                return;
+                            }
+                            app.caseKind = res.data;
+                            imgs=app.caseKind.imgs;
+                            if(app.caseKind.flag){
+                                getCaseTypeList(form,1)
+                            }else {
+                                getCaseTypeList(form,0)
+                            }
+
+                        }
+                    })
+                }
+            }
+        })
+        var up = upload.render({
+            elem: '#up',
+            acceptMime: 'image/*'
+            , url: '/upload'
+            , multiple: true
+            , done: function (res, index, upload) {
+                if (res.code == 0) {//上传成功
+                    imgs=""
+                    $('#div').append("<img style='height:120px;width: 120px' src=\"" + res.data.src + "\" >")
+                    $('#form').append("<input hidden name='imgList[]' value='"+res.data.src+"'>");
+                }
+            } //code为后台传回来的数据，具体多少自己定，
+            //后台只能传回json格式数据，不然会走error函数；
+            , error: function (index, upload) {
+                console.log("index:" + index)
+                console.log("upload:" + upload)
+            }
+        });
+        form.on('submit(add)', function (res) {
+            // 发异步，把数据提交
+            res.field.imgs=imgs;
+            $.ajax({
+                type: 'POST',
+                url: '/admin/addCaseKind',
+                data: res.field,
+                async: true,
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.alert(res.msg, {icon: 6}, function () {
+                            window.location.reload();
+                        });
+                    } else if (res.code == 403) {
+                        layer.msg(res.msg);
+                        return;
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</html>

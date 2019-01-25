@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>宇景后台管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="/js/vue.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-body" id="layui">
+    <div v-if="specificationList">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>型号</th>
+                <th>规格(mm)</th>
+                <th>处理量(m^3/h)</th>
+                <th>水力停留时间(min)</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="specification in specificationList">
+                <td><input type="text" name="serialNum" lay-verify="number" autocomplete="off"
+                           :value="specification.serialNum" class="layui-input"></td>
+                <td><input type="text" name="modelId" lay-verify="required" autocomplete="off"
+                           :value="specification.modelId" class="layui-input"></td>
+                <td><input type="text" name="specifications" lay-verify="required" autocomplete="off"
+                           :value="specification.specifications" class="layui-input"></td>
+                <td><input type="text" name="handlingNum" lay-verify="number" autocomplete="off"
+                           :value="specification.handlingNum" class="layui-input"></td>
+                <td>
+                    <input type="text" name="time" lay-verify="number" autocomplete="off"
+                           :value="specification.time" class="layui-input">
+                </td>
+                <td>
+                    <a :lay-id="specification.id" onclick="updateSpecification(this)" href="javascript:;">修改</a>
+                    <a :lay-id="specification.id" onclick="toDel('/admin/deleteSpecification',this)"
+                       href="javascript:;">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <fieldset class="layui-elem-field">
+        <legend>添加规格参数</legend>
+        <form id="form" class="layui-form">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th><span class="x-red">*</span>序号</th>
+                    <th><span class="x-red">*</span>型号</th>
+                    <th><span class="x-red">*</span>规格</th>
+                    <th><span class="x-red">*</span>处理量</th>
+                    <th><span class="x-red">*</span>水力停留时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr>
+                    <td><input type="text" name="serialNumList[]" lay-verify="number" autocomplete="off"
+                               class="layui-input"></td>
+                    <td><input type="text" name="modelIdList[]" lay-verify="required" autocomplete="off"
+                               class="layui-input"></td>
+                    <td><input type="text" name="specificationsList[]" lay-verify="required" autocomplete="off"
+                               class="layui-input"></td>
+                    <td><input type="text" name="handlingNumList[]" lay-verify="number" autocomplete="off"
+                               class="layui-input"></td>
+                    <td>
+                        <input type="text" name="timeList[]" lay-verify="number" autocomplete="off"
+                               class="layui-input">
+                    </td>
+                    <td>
+                        <button class="layui-btn" type="button" onclick="removeRow(this)">减一行</button>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            <div class="layui-form-item">
+                <button class="layui-btn" type="button" onclick="addRow()">加一行</button>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                </label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">
+                    提交
+                </button>
+            </div>
+        </form>
+    </fieldset>
+</div>
+</body>
+<script>
+    function removeRow(obj) {
+        $(obj).parent().parent().remove();
+    }
+
+    function addRow() {
+        $('#tbody').append("<tr>\n" +
+            "                <td><input type=\"text\"  name=\"serialNumList[]\" lay-verify=\"number\" autocomplete=\"off\"\n" +
+            "                             class=\"layui-input\"></td>\n" +
+            "                <td><input type=\"text\"  name=\"modelIdList[]\" lay-verify=\"required\" autocomplete=\"off\"\n" +
+            "                           class=\"layui-input\"></td>\n" +
+            "                <td><input type=\"text\"  name=\"specificationsList[]\" lay-verify=\"required\" autocomplete=\"off\"\n" +
+            "                           class=\"layui-input\"></td>\n" +
+            "                <td><input type=\"text\"  name=\"handlingNumList[]\" lay-verify=\"number\" autocomplete=\"off\"\n" +
+            "                           class=\"layui-input\"></td>\n" +
+            "                <td>\n" +
+            "                    <input type=\"text\" name=\"timeList[]\" lay-verify=\"number\" autocomplete=\"off\"\n" +
+            "                           class=\"layui-input\">\n" +
+            "                </td>\n" +
+            "                <td>\n" +
+            "                    <button class=\"layui-btn\" type=\"button\" onclick=\"removeRow(this)\">减一行</button>\n" +
+            "                </td>\n" +
+            "            </tr>")
+    }
+
+    layui.use(['layer', 'form'], function () {
+        var layer = layui.layer, form = layui.form;
+        var app = new Vue({
+            el: '#layui',
+            data: {
+                specificationList: null,
+            },
+            beforeMount: function () {
+                var pid = parent.layer.idnum;
+                this.getSpecificationList(pid);
+            },
+            methods: {
+                getSpecificationList: function (pid) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get/specificationList',
+                        dataType: 'json',
+                        data: {
+                            pid: pid,
+                        },
+                        async: true,
+                        success: function (res) {
+                            console.log(res)
+                            if (res.code == 403) {
+                                layer.msg(res.msg)
+                                return;
+                            }
+                            app.specificationList = res.data;
+
+                        }
+                    })
+                }
+            }
+        })
+        form.on('submit(add)', function (res) {
+            // 发异步，把数据提交
+            res.field.pid = parent.layer.idnum;
+            $.ajax({
+                type: 'POST',
+                url: '/product/addSpecification',
+                data: res.field,
+                async: true,
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.alert(res.msg, {icon: 6}, function () {
+                            window.location.reload();
+                        });
+                    } else if (res.code == 403) {
+                        layer.msg(res.msg);
+                        return;
+                    }
+                }
+            })
+            return false;
+        });
+    })
+
+    function updateSpecification(obj) {
+        var field = new Object();
+        field.id = $(obj).attr("lay-id")
+        field.pid = parent.layer.idnum;
+        var nodes = $(obj).parent().siblings()
+        field.serialNum = $(nodes[0]).children('input').val();
+        field.modelId = $(nodes[1]).children('input').val();
+        field.specifications = $(nodes[2]).children('input').val();
+        field.handlingNum = $(nodes[3]).children('input').val();
+        field.time = $(nodes[4]).children('input').val();
+        $.ajax({
+            type: 'PUT',
+            url: '/product/updateSpecification',
+            data: field,
+            async: true,
+            success: function (res) {
+                if (res.code == 200) {
+                    layer.alert(res.msg, {icon: 6},function () {
+                        window.location.reload();
+                    });
+                } else if (res.code = 403) {
+                    layer.msg(res.msg)
+                    return;
+                }
+            }
+        })
+    }
+</script>
+</html>

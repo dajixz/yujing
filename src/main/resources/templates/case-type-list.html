@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>宇景后台管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="/js/vue.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <!--<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>-->
+    <!--<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>-->
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body" id="layui">
+    <div class="layui-input-inline">
+        <input id="goodsName" type="text" name="goodsName" placeholder="请输入货品名称" autocomplete="off"
+               lay-verify="required" class="layui-input">
+    </div>
+    <button class="layui-btn" @click="searchGoodsList(1)"><i class="layui-icon">&#xe615;</i></button>
+    <button class="layui-btn" onclick="x_admin_show('添加实物案例类别','/view/case-type-add')"><i class="layui-icon"></i>添加</button>
+    <button class="layui-btn" @click="getCaseTypeList(0)">中文</button>
+    <button class="layui-btn" @click="getCaseTypeList(1)">英文</button>
+    <table id="layui_table_id" class="layui-table">
+        <thead>
+        <tr>
+            <th>类别ID</th>
+            <th>类别名称</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="caseType in caseTypeList">
+            <td>{{caseType.id}}</td>
+            <td>{{caseType.type_name}}</td>
+            <td class="td-manage">
+                <a title="删除" :lay-id="caseType.id" onclick="toDel('/case/deleteCaseType',this)" href="javascript:;">
+                    <i class="layui-icon">&#xe640;</i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+<script>
+    layui.use('layer', function () {
+        var layer = layui.layer;
+        var app = new Vue({
+            el: '#layui',
+            data: {
+                caseTypeList: [],
+            },
+            created: function () {
+                this.getCaseTypeList(0)
+            },
+            methods: {
+                getCaseTypeList: function (flag) {
+                    var flag=flag;
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get/caseTypeList',
+                        data:{
+                            flag:flag
+                        },
+                        async: true,
+                        success: function (res) {
+                            if(res.code==200){
+                                app.caseTypeList = res.data;
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    })
+
+</script>
+</html>

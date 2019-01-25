@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>宇景后台管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="/js/vue.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div id="layui" class="x-body">
+    <form id="form" class="layui-form">
+        <input hidden name="id" :value="product.id">
+        <input hidden name="did" :value="productDetails.id">
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="x-red">*</span>产品名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="name" name="name" lay-verify="required"
+                       autocomplete="off" class="layui-input" :value="product.name">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="text" class="layui-form-label">
+                <span class="x-red">*</span>产品描述
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="text" name="text" lay-verify="required"
+                       autocomplete="off" class="layui-input" :value="product.text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="price" class="layui-form-label">
+                <span class="x-red">*</span>销售价
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="price" name="price" lay-verify="required"
+                       autocomplete="off" class="layui-input" :value="product.price">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="batchQuantity" class="layui-form-label">
+                <span class="x-red">*</span>起批量
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="batchQuantity" name="batchQuantity" lay-verify="required"
+                       autocomplete="off" class="layui-input" :value="product.batchQuantity">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>产品类型
+            </label>
+            <div class="layui-input-block">
+                <input disabled name="type" lay-verify="required" :value="product.type" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>修改类型
+            </label>
+            <div class="layui-input-block">
+                <select id="type" name="type">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                产品图片
+            </label>
+            <div v-if="product.imgList">
+                 <span v-for="img in product.imgList">
+                     <img style="width:100px;height: 100px" :src="img">&nbsp;&nbsp;
+                 </span>
+            </div>
+
+            <button type="button" class="layui-btn" id="up">多图片覆盖</button>
+
+            <div id="div1"></div>
+        </div>
+        <fieldset class="layui-elem-field">
+            <legend>产品详情</legend>
+            <div class="layui-field-box">
+                <div class="layui-form-item">
+                    <label for="imgName" class="layui-form-label">
+                        <span class="x-red">*</span>图片名称
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" id="imgName" name="imgName" lay-verify="required"
+                               autocomplete="off" class="layui-input" :value="productDetails.imgName">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        详情图片
+                    </label>
+                    <div v-if="productDetails.img">
+                        <img style="height: 80px;width: 80px" :src="productDetails.img">
+                    </div>
+                    <button type="button" class="layui-btn" id="upload">
+                        <i class="layui-icon">&#xe67c;</i>覆盖图片
+                    </button>
+                    <div id="div2"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="characteristic" class="layui-form-label">
+                        <span class="x-red">*</span>功能特点
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea type="text" id="characteristic" name="characteristic" lay-verify="required"
+                                  :value="productDetails.characteristic" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="area" class="layui-form-label">
+                        <span class="x-red">*</span>应用领域
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" id="area" name="area" lay-verify="required"
+                               :value="productDetails.area" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="patentNum" class="layui-form-label">专利号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="patentNum" name="patentNum"
+                               :value="productDetails.patentNum" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+            </label>
+            <button class="layui-btn" lay-filter="add" lay-submit="">
+                修改
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    layui.use(['layer', 'form','upload'], function () {
+        var layer = layui.layer, form = layui.form ,upload= layui.upload;
+        var imgs="";
+        var img="";
+        var app = new Vue({
+            el: '#layui',
+            data: {
+                product: "",
+                productDetails: ""
+            },
+            beforeMount: function () {
+                var id = parent.layer.idnum;
+                this.getProductById(id);
+                this.getProductDetailsById(id);
+            },
+            methods: {
+                getProductDetailsById: function (id) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get/productDetails',
+                        dataType: 'json',
+                        data: {
+                            id: id,
+                        },
+                        async: true,
+                        success: function (res) {
+                            if (res.code == 403) {
+                                layer.msg(res.msg)
+                                return;
+                            }
+                            app.productDetails = res.data;
+                            img = app.productDetails.img
+
+                        }
+                    })
+                },
+                getProductById: function (id, flag) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get/product',
+                        dataType: 'json',
+                        data: {
+                            id: id,
+                            flag: flag
+                        },
+                        async: true,
+                        success: function (res) {
+                            if (res.code == 403) {
+                                layer.msg(res.msg)
+                                return;
+                            }
+                            app.product = res.data;
+                            imgs = app.product.imgs
+                            if(app.product.flag){
+                                getProductTypeList(form,1);
+                            }else {
+                                getProductTypeList(form,0);
+                            }
+
+                        }
+                    })
+                }
+            }
+        })
+        var up = upload.render({
+            elem: '#up',
+            acceptMime: 'image/*'
+            , url: '/upload'
+            , multiple: true
+            , done: function (res, index, upload) {
+                if (res.code == 0) {//上传成功
+                    imgs=""
+                    $('#div1').append("<img style='height:120px;width: 120px' src=\"" + res.data.src + "\" >")
+                    $('#form').append("<input hidden name='imgList[]' value='"+res.data.src+"'>");
+                }
+            } //code为后台传回来的数据，具体多少自己定，
+            //后台只能传回json格式数据，不然会走error函数；
+            , error: function (index, upload) {
+                console.log("index:" + index)
+                console.log("upload:" + upload)
+            }
+        });
+        var upload = upload.render({
+            elem: '#upload',
+            acceptMime: 'image/*'
+            , url: '/upload'
+            , done: function (res, index, upload) {
+                if (res.code == 0) {//上传成功
+                    img=""
+                    $('#div2').html("<img style='height: 120px;width: 120px' src=\"" + res.data.src + "\" >");
+                    img = res.data.src
+                }
+            } //code为后台传回来的数据，具体多少自己定，
+            //后台只能传回json格式数据，不然会走error函数；
+            , error: function (index, upload) {
+                console.log("index:" + index)
+                console.log("upload:" + upload)
+            }
+        });
+        form.on('submit(add)', function (res) {
+            res.field.img=img;
+            res.field.imgs=imgs;
+            $.ajax({
+                type: 'PUT',
+                url: '/product/updateProduct',
+                data: res.field,
+                async: true,
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.alert(res.msg, {icon: 6}, function () {
+                            window.location.reload();
+                        });
+                    } else if (res.code == 403) {
+                        layer.msg(res.msg);
+                        return;
+                    }
+                }
+            })
+            //发异步，把数据提交给php
+            return false;
+        });
+    })
+
+
+</script>
+</html>
