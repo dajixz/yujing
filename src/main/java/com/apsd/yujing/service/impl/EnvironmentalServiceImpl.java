@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class EnvironmentalServiceImpl implements EnvironmentalService {
 
     @Override
     public Page<Environmental> getEnvironmentalList(Integer page,Integer size) {
-        Pageable pageable = PageRequest.of(page-1,size);
+        Pageable pageable = PageRequest.of(page-1,size, Sort.Direction.DESC ,"id");
         return environmentalRepository.findAll(pageable);
     }
 }

@@ -13,5 +13,4 @@ public class ProductVo {
     private Object pageInfo;
     private String previous;
     private String next;
-
 }

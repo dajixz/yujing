@@ -3,11 +3,13 @@ package com.apsd.yujing.service.impl;
 import com.apsd.yujing.entiy.*;
 import com.apsd.yujing.repository.*;
 import com.apsd.yujing.service.ProductService;
+import com.apsd.yujing.vo.InfoVo;
 import com.apsd.yujing.vo.ProductVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -37,10 +39,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, String type) throws Exception{
-        Pageable pageable = PageRequest.of(page - 1, size);
+    public ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, String type) throws Exception {
+        Pageable pageable = PageRequest.of(page - 1, size,Sort.Direction.DESC,"id");
         String previous = null;
-        String next=null;
+        String next = null;
         Page<Product> productPage = productRepository.findAllByFlagAndType(pageable, flag, type);
         if (size == 1) {
             if (productPage.hasPrevious()) {
@@ -48,13 +50,13 @@ public class ProductServiceImpl implements ProductService {
                 Page<Product> productPage0 = productRepository.findAllByFlagAndType(pageable0, flag, type);
                 previous = productPage0.getContent().get(0).getName();
             }
-            if(productPage.hasNext()){
+            if (productPage.hasNext()) {
                 Pageable pageable1 = PageRequest.of(page, size);
                 Page<Product> productPage0 = productRepository.findAllByFlagAndType(pageable1, flag, type);
                 next = productPage0.getContent().get(0).getName();
             }
         }
-        return new ProductVo(productPage,previous,next);
+        return new ProductVo(productPage, previous, next);
     }
 
     @Override
@@ -137,6 +139,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public InfoVo getProductInfoByIdAndFlagAndType(Integer id,boolean flag,String type) {
+        InfoVo infoVo = new InfoVo();
+        infoVo.setInfo(productRepository.findById(id).get());
+        infoVo.setPrevInfo(productRepository.getPrevProductByNowId(id,flag,type));
+        infoVo.setNextInfo(productRepository.getNextProductByNowId(id,flag,type));
+        return infoVo;
+    }
+
+    @Override
     public Product getProductById(Integer id) {
         return productRepository.findById(id).get();
     }
@@ -176,7 +187,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getProductListByFlag(Integer page, Integer size, boolean flag) {
-        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC,"id");
         return productRepository.findAllByFlag(pageable, flag);
     }
 }

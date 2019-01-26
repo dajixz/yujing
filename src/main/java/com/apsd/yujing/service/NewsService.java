@@ -1,6 +1,7 @@
 package com.apsd.yujing.service;
 
 import com.apsd.yujing.entiy.News;
+import com.apsd.yujing.vo.InfoVo;
 import org.springframework.data.domain.Page;
 
 /**
@@ -13,4 +14,5 @@ public interface NewsService {
     News addNews(News news);
     void deleteNewsById(Integer id);
     News getNewsById(Integer id);
+    InfoVo getNewsInfoByIdAndFlagAndType(Integer id, boolean flag,String type);
 }

@@ -2,6 +2,7 @@ package com.apsd.yujing.service;
 
 import com.apsd.yujing.entiy.CaseKind;
 import com.apsd.yujing.entiy.CaseType;
+import com.apsd.yujing.vo.InfoVo;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface CaseService {
     void deleteCaseKindById(Integer id);
     void deleteCaseTypeById(Integer id);
     CaseKind getCaseKindById(Integer id);
+    Integer updateCaseTypeState(boolean state,Integer id);
+    InfoVo getCaseKindInfoByIdAndFlag(Integer id, boolean flag);
 
 }

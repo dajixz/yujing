@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,7 +31,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Page<Video> getVideoList(Integer page,Integer size) {
-        Pageable pageable = PageRequest.of(page-1,size);
+        Pageable pageable = PageRequest.of(page-1,size, Sort.Direction.DESC,"id");
         return videoRepository.findAll(pageable);
     }
 }

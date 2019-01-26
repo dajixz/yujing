@@ -1,6 +1,7 @@
 package com.apsd.yujing.service;
 
 import com.apsd.yujing.entiy.*;
+import com.apsd.yujing.vo.InfoVo;
 import com.apsd.yujing.vo.ProductVo;
 import org.springframework.data.domain.Page;
 
@@ -19,6 +20,7 @@ public interface ProductService{
     ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, String type)throws Exception;
     void deleteProductById(Integer id);
     void deleteProductTypeById(Integer id);
+    InfoVo getProductInfoByIdAndFlagAndType(Integer id,boolean flag,String type);
     Product getProductById(Integer id);
     ProductDetails getProductDetailsByPid(Integer Pid);
     List<SpecificationParameter> addSpecification(SpecificationParameter specificationParameter);

@@ -3,6 +3,7 @@ package com.apsd.yujing.controller;
 import com.apsd.yujing.entiy.*;
 import com.apsd.yujing.entiy.Process;
 import com.apsd.yujing.service.*;
+import com.apsd.yujing.vo.InfoVo;
 import com.apsd.yujing.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -162,6 +163,7 @@ public class GetController {
             return seniorityService.getSeniorityListByFlag(page,size,true);
         }
     }
+
     @GetMapping("/productList")
     public ResultVo getProductList(Integer page,Integer size,Integer flag,String type){
         try {
@@ -203,6 +205,62 @@ public class GetController {
             return problemService.getProblemListByFlag(page,size,false);
         }else {
             return problemService.getProblemListByFlag(page,size,true);
+        }
+    }
+    @GetMapping("/newsInfo")
+    public ResultVo getNewsInfoByIdAndFlagAndType(Integer id,Integer flag,String type){
+        InfoVo info=null;
+        if(flag==0){
+            info = newsService.getNewsInfoByIdAndFlagAndType(id,false,type);
+        }else {
+            info = newsService.getNewsInfoByIdAndFlagAndType(id,true,type);
+        }
+        if(info!=null){
+            return ResultVo.ok(info);
+        }else {
+            return ResultVo.build(403,"操作失败~！");
+        }
+    }
+    @GetMapping("/caseKindInfo")
+    public ResultVo getCaseKindById(Integer id,Integer flag){
+        InfoVo info=null;
+        if(flag==0){
+            info = caseService.getCaseKindInfoByIdAndFlag(id,false);
+        }else {
+            info = caseService.getCaseKindInfoByIdAndFlag(id,true);
+        }
+        if(info!=null){
+            return ResultVo.ok(info);
+        }else {
+            return ResultVo.build(403,"操作失败~！");
+        }
+    }
+    @GetMapping("/productInfo")
+    public ResultVo getProductByIdAndFlagAndType(Integer id,Integer flag,String type){
+        InfoVo info=null;
+        if(flag==0){
+            info = productService.getProductInfoByIdAndFlagAndType(id,false,type);
+        }else {
+            info = productService.getProductInfoByIdAndFlagAndType(id,true,type);
+        }
+        if(info!=null){
+            return ResultVo.ok(info);
+        }else {
+            return ResultVo.build(403,"操作失败~！");
+        }
+    }
+    @GetMapping("/solutionInfo")
+    public ResultVo getSolutionById(Integer id,Integer flag){
+        InfoVo info=null;
+        if(flag==0){
+            info = solutionService.getSolutionInfoByIdAndFlag(id,false);
+        }else {
+            info = solutionService.getSolutionInfoByIdAndFlag(id,true);
+        }
+        if(info!=null){
+            return ResultVo.ok(info);
+        }else {
+            return ResultVo.build(403,"操作失败~！");
         }
     }
     @GetMapping("/solutionList")

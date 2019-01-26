@@ -1,6 +1,7 @@
 package com.apsd.yujing.service;
 
 import com.apsd.yujing.entiy.Solution;
+import com.apsd.yujing.vo.InfoVo;
 import org.springframework.data.domain.Page;
 
 /**
@@ -12,4 +13,5 @@ public interface SolutionService {
     Page<Solution> getSolutionListByFlag(Integer page,Integer size,boolean flag);
     void deleteSolutionById(Integer id);
     Solution getSolutionById(Integer id);
+    InfoVo getSolutionInfoByIdAndFlag(Integer id, boolean flag);
 }

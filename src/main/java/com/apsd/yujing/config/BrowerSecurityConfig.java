@@ -49,7 +49,7 @@ public class BrowerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/view/login")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/view/login","/get/*","/swagger-ui.html",
+                .antMatchers("/view/login","/get/*","/swagger-ui.html/*",
                         "/logout",
                         "/static/**",
                         "/js/*",

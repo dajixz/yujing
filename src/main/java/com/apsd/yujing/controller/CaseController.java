@@ -21,6 +21,16 @@ public class CaseController {
 
     @Autowired
     private CaseService caseService;
+
+    @PutMapping("/updateCaseTypeState")
+    public ResultVo updateIntroductionState(Integer id,boolean state){
+        Integer integer = caseService.updateCaseTypeState(!state,id);
+        if(integer!=null){
+            return ResultVo.ok();
+        }else {
+            return ResultVo.build(403,"操作失败~！");
+        }
+    }
     @GetMapping("/getCaseKind")
     public ResultVo getCaseKind(Integer id){
         CaseKind c = caseService.getCaseKindById(id);

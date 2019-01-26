@@ -5,11 +5,13 @@ import com.apsd.yujing.entiy.CaseType;
 import com.apsd.yujing.repository.CaseKindRepository;
 import com.apsd.yujing.repository.CaseTypeRepository;
 import com.apsd.yujing.service.CaseService;
+import com.apsd.yujing.vo.InfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +26,22 @@ public class CaseServiceImpl implements CaseService {
 
     @Autowired
     private CaseTypeRepository caseTypeRepository;
+
+    @Override
+    @Transactional
+    public Integer updateCaseTypeState(boolean state, Integer id) {
+        return caseTypeRepository.updateCaseTypeState(state,id);
+    }
+
+    @Override
+    @Transactional
+    public InfoVo getCaseKindInfoByIdAndFlag(Integer id, boolean flag) {
+        InfoVo infoVo = new InfoVo();
+        infoVo.setInfo(caseKindRepository.findById(id).get());
+        infoVo.setPrevInfo(caseKindRepository.getPrevCaseKindByNowId(id,flag));
+        infoVo.setNextInfo(caseKindRepository.getNextCaseKindByNowId(id,flag));
+        return infoVo;
+    }
 
     @Override
     public void deleteCaseKindById(Integer id) {

@@ -43,7 +43,6 @@
     <table id="layui_table_id" class="layui-table">
         <thead>
         <tr>
-            <th>ID</th>
             <th>产品名称</th>
             <th>产品类别</th>
             <th>销售价</th>
@@ -53,11 +52,10 @@
         </thead>
         <tbody>
         <tr v-for="product in productList">
-            <td>{{product.id}}</td>
             <td>{{product.name}}</td>
+            <td>{{product.type}}</td>
             <td>{{product.price}}</td>
             <td>{{product.batchQuantity}}</td>
-            <td>{{product.type}}</td>
             <td class="td-manage">
                 <a title="查看" :lay-id="product.id" onclick="toShow('/view/product-info',this)" href="javascript:;">
                     <i class="layui-icon">&#xe63c;</i>

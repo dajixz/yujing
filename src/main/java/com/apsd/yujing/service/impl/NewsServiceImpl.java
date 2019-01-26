@@ -3,6 +3,7 @@ package com.apsd.yujing.service.impl;
 import com.apsd.yujing.entiy.News;
 import com.apsd.yujing.repository.NewsRepository;
 import com.apsd.yujing.service.NewsService;
+import com.apsd.yujing.vo.InfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,14 +31,24 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public InfoVo getNewsInfoByIdAndFlagAndType(Integer id, boolean flag,String type) {
+        newsRepository.updateNewsClickNumById(id);
+        InfoVo infoVo = new InfoVo();
+        infoVo.setInfo(newsRepository.findById(id).get());
+        infoVo.setPrevInfo(newsRepository.getPrevNewsByNowId(id,flag,type));
+        infoVo.setNextInfo(newsRepository.getNextNewsByNowId(id,flag,type));
+        return infoVo;
+    }
+
+    @Override
     public Page<News> getNewsListByFlagAndType(Integer page, Integer size, boolean flag, String type) {
-        Pageable pageable =  PageRequest.of(page-1,size, Sort.Direction.DESC, "date");
+        Pageable pageable =  PageRequest.of(page-1,size, Sort.Direction.DESC,"id");
         return newsRepository.findAllByFlagAndType(pageable,flag,type);
     }
 
     @Override
     public Page<News> getNewsListByFlag(Integer page,Integer size, boolean flag) {
-        Pageable pageable =  PageRequest.of(page-1, size);
+        Pageable pageable =  PageRequest.of(page-1, size, Sort.Direction.DESC,"id");
         return newsRepository.findAllByFlag(pageable,flag);
     }
 
