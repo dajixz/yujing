@@ -22,6 +22,6 @@ public class Product {
     private String imgs;
     @Transient
     private List<String> imgList;
-    private String type;
+    private int type;
     private boolean flag;
 }

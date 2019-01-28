@@ -14,9 +14,9 @@ import org.springframework.data.repository.query.Param;
 public interface ProductRepository extends JpaRepository<Product,Integer>{
     Page<Product> findCaseKindsByTypeAndFlag(Pageable pageable, String caseType, boolean flag);
     Page<Product> findAllByFlag(Pageable pageable,boolean flag);
-    Page<Product> findAllByFlagAndType(Pageable pageable,boolean flag,String type);
+    Page<Product> findAllByFlagAndType(Pageable pageable,boolean flag,Integer type);
     @Query(value = "select * from product where id > :id and flag=:flag and type=:type order by id asc limit 0,1",nativeQuery = true)
-    Product getPrevProductByNowId(@Param("id")Integer id,@Param("flag")boolean flag,@Param("type")String type);
+    Product getPrevProductByNowId(@Param("id")Integer id,@Param("flag")boolean flag,@Param("type")Integer type);
     @Query(value = "select * from product where id < :id and flag=:flag and type=:type order by id desc limit 0,1",nativeQuery = true)
-    Product getNextProductByNowId(@Param("id")Integer id,@Param("flag")boolean flag,@Param("type")String type);
+    Product getNextProductByNowId(@Param("id")Integer id,@Param("flag")boolean flag,@Param("type")Integer type);
 }

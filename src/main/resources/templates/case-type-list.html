@@ -42,18 +42,14 @@
         <thead>
         <tr>
             <th>类别名称</th>
-            <th>是否开启</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="caseType in caseTypeList">
             <td>{{caseType.type_name}}</td>
-            <td>{{caseType.state==0?'否':'是'}}</td>
             <td class="td-manage">
-                <a title="开启/关闭" :lay-id="caseType.id" :lay-data="caseType.state" onclick="toOpen('/case/updateCaseTypeState',this)" href="javascript:;">
-                    <i class="layui-icon">&#xe605;</i>
-                </a>
+
                 <a title="删除" :lay-id="caseType.id" onclick="toDel('/case/deleteCaseType',this)" href="javascript:;">
                     <i class="layui-icon">&#xe640;</i>
                 </a>

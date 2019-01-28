@@ -1,7 +1,7 @@
 package com.apsd.yujing.controller;
 
 import com.apsd.yujing.entiy.*;
-import com.apsd.yujing.entiy.Process;
+
 import com.apsd.yujing.service.*;
 import com.apsd.yujing.vo.InfoVo;
 import com.apsd.yujing.vo.ResultVo;
@@ -101,7 +101,7 @@ public class GetController {
         }
     }
     @GetMapping("/newsList")
-    public Page<News> getNewsList(Integer page,Integer size,Integer flag,String type){
+    public Page<News> getNewsList(Integer page,Integer size,Integer flag,Integer type){
         if(flag==0){
             return newsService.getNewsListByFlagAndType(page,size,false,type);
         }else {
@@ -111,7 +111,7 @@ public class GetController {
 
 
     @GetMapping("/caseKindList")
-    public Page<CaseKind> getCaseKindList(Integer page,Integer size, Integer flag,String type){
+    public Page<CaseKind> getCaseKindList(Integer page,Integer size, Integer flag, Integer type){
         if(flag==0){
             return caseService.getCaseKindListByFlag(page,size,false,type);
         }else{
@@ -165,7 +165,7 @@ public class GetController {
     }
 
     @GetMapping("/productList")
-    public ResultVo getProductList(Integer page,Integer size,Integer flag,String type){
+    public ResultVo getProductList(Integer page,Integer size,Integer flag,Integer type){
         try {
             if(flag==0){
                 return ResultVo.ok(productService.getProductListByFlagAndType(page,size,false,type));
@@ -208,7 +208,7 @@ public class GetController {
         }
     }
     @GetMapping("/newsInfo")
-    public ResultVo getNewsInfoByIdAndFlagAndType(Integer id,Integer flag,String type){
+    public ResultVo getNewsInfoByIdAndFlagAndType(Integer id,Integer flag,Integer type){
         InfoVo info=null;
         if(flag==0){
             info = newsService.getNewsInfoByIdAndFlagAndType(id,false,type);
@@ -222,12 +222,12 @@ public class GetController {
         }
     }
     @GetMapping("/caseKindInfo")
-    public ResultVo getCaseKindById(Integer id,Integer flag){
+    public ResultVo getCaseKindById(Integer id,Integer flag,Integer type){
         InfoVo info=null;
         if(flag==0){
-            info = caseService.getCaseKindInfoByIdAndFlag(id,false);
+            info = caseService.getCaseKindInfoByIdAndFlag(id,false,type);
         }else {
-            info = caseService.getCaseKindInfoByIdAndFlag(id,true);
+            info = caseService.getCaseKindInfoByIdAndFlag(id,true,type);
         }
         if(info!=null){
             return ResultVo.ok(info);
@@ -236,7 +236,7 @@ public class GetController {
         }
     }
     @GetMapping("/productInfo")
-    public ResultVo getProductByIdAndFlagAndType(Integer id,Integer flag,String type){
+    public ResultVo getProductByIdAndFlagAndType(Integer id,Integer flag,Integer type){
         InfoVo info=null;
         if(flag==0){
             info = productService.getProductInfoByIdAndFlagAndType(id,false,type);
@@ -250,12 +250,12 @@ public class GetController {
         }
     }
     @GetMapping("/solutionInfo")
-    public ResultVo getSolutionById(Integer id,Integer flag){
+    public ResultVo getSolutionById(Integer id,Integer flag,Integer type){
         InfoVo info=null;
         if(flag==0){
-            info = solutionService.getSolutionInfoByIdAndFlag(id,false);
+            info = solutionService.getSolutionInfoByIdAndFlagAndType(id,false,type);
         }else {
-            info = solutionService.getSolutionInfoByIdAndFlag(id,true);
+            info = solutionService.getSolutionInfoByIdAndFlagAndType(id,true,type);
         }
         if(info!=null){
             return ResultVo.ok(info);
@@ -264,11 +264,11 @@ public class GetController {
         }
     }
     @GetMapping("/solutionList")
-    public Page<Solution> getSolutionList(Integer page,Integer size, Integer flag){
+    public Page<Solution> getSolutionList(Integer page,Integer size, Integer flag,Integer type){
         if(flag==0){
-            return solutionService.getSolutionListByFlag(page,size,false);
+            return solutionService.getSolutionListByFlagAndType(page,size,false,type);
         }else {
-            return solutionService.getSolutionListByFlag(page,size,true);
+            return solutionService.getSolutionListByFlagAndType(page,size,true,type);
         }
     }
     @GetMapping("/processList")

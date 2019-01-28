@@ -17,6 +17,14 @@ public class SolutionController {
 
     @Autowired
     private SolutionService solutionService;
+    @GetMapping("/solutionList")
+    public Page<Solution> getSolutionList(Integer page,Integer size, Integer flag){
+        if(flag==0){
+            return solutionService.getSolutionListByFlag(page,size,false);
+        }else {
+            return solutionService.getSolutionListByFlag(page,size,true);
+        }
+    }
     @GetMapping("/getSolution")
     public ResultVo getSolution(Integer id){
         Solution s = solutionService.getSolutionById(id);

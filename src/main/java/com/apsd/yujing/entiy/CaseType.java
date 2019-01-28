@@ -20,5 +20,5 @@ public class CaseType {
     private int id;
     private String type_name;
     private boolean flag;
-    private boolean state;
+
 }

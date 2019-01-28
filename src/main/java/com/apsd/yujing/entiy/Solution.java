@@ -16,7 +16,7 @@ public class Solution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    private int type;
     private String title;
     @Lob
     private String stage;

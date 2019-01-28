@@ -14,10 +14,11 @@ import org.springframework.data.repository.query.Param;
  */
 public interface SolutionRepositroy extends JpaRepository<Solution,Integer> {
     Page<Solution> findAllByFlag(Pageable pageable, boolean flag);
-    @Query(value = "select * from solution where id > :id and flag=:flag order by id asc limit 0,1",nativeQuery = true)
-    Solution getPrevSolutionByNowId(@Param("id")Integer id, @Param("flag")boolean flag);
-    @Query(value = "select * from solution where id < :id and flag=:flag order by id desc limit 0,1",nativeQuery = true)
-    Solution getNextSolutionByNowId(@Param("id")Integer id,@Param("flag")boolean flag);
+    Page<Solution> findAllByFlagAndType(Pageable pageable, boolean flag,Integer type);
+    @Query(value = "select * from solution where id > :id and flag=:flag and type=:type order by id asc limit 0,1",nativeQuery = true)
+    Solution getPrevSolutionByNowId(@Param("id")Integer id, @Param("flag")boolean flag,@Param("type")Integer type);
+    @Query(value = "select * from solution where id < :id and flag=:flag and type=:type order by id desc limit 0,1",nativeQuery = true)
+    Solution getNextSolutionByNowId(@Param("id")Integer id,@Param("flag")boolean flag,@Param("type")Integer type);
     @Modifying
     @Query(value = "update solution set click_num =click_num+1 where id =:id",nativeQuery = true)
     Integer updateSolutionClickNumById(@Param("id")Integer id);

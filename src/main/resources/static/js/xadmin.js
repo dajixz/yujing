@@ -238,7 +238,7 @@ function getCaseTypeList(form,flag) {
         success: function (res) {
             if (res.code == 200) {
                 for (var index in res.data){
-                    var body="<option value=\""+res.data[index].type_name+"\">"+res.data[index].type_name+"</option>"
+                    var body="<option value=\""+res.data[index].id+"\">"+res.data[index].type_name+"</option>"
                     $("#type").append(body);
                 }
                 form.render();
@@ -257,7 +257,7 @@ function getProductTypeList(form, flag) {
         success: function (res) {
             if (res.code == 200) {
                 for (var index in res.data) {
-                    var body = "<option value=\"" + res.data[index].typeName + "\">" + res.data[index].typeName + "</option>"
+                    var body = "<option value=\"" + res.data[index].id + "\">" + res.data[index].typeName + "</option>"
                     $("#type").append(body);
                 }
                 form.render();

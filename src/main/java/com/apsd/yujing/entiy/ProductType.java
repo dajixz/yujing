@@ -19,4 +19,5 @@ public class ProductType {
     private int id;
     private String typeName;
     private boolean flag;
+    private boolean state;
 }

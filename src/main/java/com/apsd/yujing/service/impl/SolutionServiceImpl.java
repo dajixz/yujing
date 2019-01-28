@@ -33,13 +33,19 @@ public class SolutionServiceImpl implements SolutionService{
     }
 
     @Override
+    public Page<Solution> getSolutionListByFlagAndType(Integer page, Integer size, boolean flag, Integer type) {
+        Pageable pageable = PageRequest.of(page-1,size,Sort.Direction.DESC,"id");
+        return solutionRepositroy.findAllByFlagAndType(pageable,flag,type);
+    }
+
+    @Override
     @Transactional
-    public InfoVo getSolutionInfoByIdAndFlag(Integer id, boolean flag) {
+    public InfoVo getSolutionInfoByIdAndFlagAndType(Integer id, boolean flag,Integer type) {
         solutionRepositroy.updateSolutionClickNumById(id);
         InfoVo infoVo = new InfoVo();
         infoVo.setInfo(solutionRepositroy.findById(id).get());
-        infoVo.setPrevInfo(solutionRepositroy.getPrevSolutionByNowId(id,flag));
-        infoVo.setNextInfo(solutionRepositroy.getNextSolutionByNowId(id,flag));
+        infoVo.setPrevInfo(solutionRepositroy.getPrevSolutionByNowId(id,flag,type));
+        infoVo.setNextInfo(solutionRepositroy.getNextSolutionByNowId(id,flag,type));
         return infoVo;
     }
 

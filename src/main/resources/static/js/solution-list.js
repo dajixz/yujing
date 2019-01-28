@@ -15,7 +15,7 @@ layui.use(['layer', 'laypage'], function () {
             getSolutionList: function (page,size,flag) {
                 $.ajax({
                     type: 'GET',
-                    url: '/get/solutionList',
+                    url: '/solution/solutionList',
                     dataType: 'json',
                     data: {
                         page: page,

@@ -47,6 +47,7 @@
             <th>来源</th>
             <th>日期</th>
             <th>点击量</th>
+            <th>类别</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -56,6 +57,7 @@
             <td>{{solution.author}}</td>
             <td>{{solution.date}}</td>
             <td>{{solution.click_num}}</td>
+            <td>{{solution.type==0?'室外养殖解决方案':'室内养殖解决方案'}}</td>
             <td class="td-manage">
                 <a title="查看" :lay-id="solution.id" onclick="toShow('/view/solution-info',this)" href="javascript:;">
                     <i class="layui-icon">&#xe63c;</i>

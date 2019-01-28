@@ -2,6 +2,9 @@ package com.apsd.yujing.repository;
 
 import com.apsd.yujing.entiy.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -11,4 +14,8 @@ import java.util.List;
  */
 public interface ProductTypeRepository extends JpaRepository<ProductType,Integer> {
     List<ProductType> findAllByFlag(boolean flag);
+    @Modifying
+    @Query("update ProductType set state = :state where id=:id")
+    Integer updateProductTypeState(@Param("state")boolean state, @Param("id")int id);
+
 }

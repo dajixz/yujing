@@ -17,10 +17,11 @@ public interface ProductService{
     ProductType addProductType(ProductType productType);
     List<ProductType> getProductTypeListByFlag(boolean flag);
     Page<Product> getProductListByFlag(Integer page,Integer size, boolean flag);
-    ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, String type)throws Exception;
+    ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, Integer type)throws Exception;
     void deleteProductById(Integer id);
     void deleteProductTypeById(Integer id);
-    InfoVo getProductInfoByIdAndFlagAndType(Integer id,boolean flag,String type);
+    Integer updateProductTypeState(boolean state, Integer id);
+    InfoVo getProductInfoByIdAndFlagAndType(Integer id,boolean flag,Integer type);
     Product getProductById(Integer id);
     ProductDetails getProductDetailsByPid(Integer Pid);
     List<SpecificationParameter> addSpecification(SpecificationParameter specificationParameter);

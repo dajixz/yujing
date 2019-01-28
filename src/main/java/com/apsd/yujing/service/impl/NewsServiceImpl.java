@@ -10,6 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author 大稽
@@ -31,7 +35,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public InfoVo getNewsInfoByIdAndFlagAndType(Integer id, boolean flag,String type) {
+    @Transactional
+    public InfoVo getNewsInfoByIdAndFlagAndType(Integer id, boolean flag,Integer type) {
         newsRepository.updateNewsClickNumById(id);
         InfoVo infoVo = new InfoVo();
         infoVo.setInfo(newsRepository.findById(id).get());
@@ -41,7 +46,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public Page<News> getNewsListByFlagAndType(Integer page, Integer size, boolean flag, String type) {
+    public Page<News> getNewsListByFlagAndType(Integer page, Integer size, boolean flag, Integer type) {
         Pageable pageable =  PageRequest.of(page-1,size, Sort.Direction.DESC,"id");
         return newsRepository.findAllByFlagAndType(pageable,flag,type);
     }
@@ -54,6 +59,14 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public News addNews(News news) {
+        String regEx_img = "(<img.*src\\s*=\\s*(.*?)[^>]*?>)";
+        Pattern p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+        Matcher m_image = p_image.matcher(news.getText());
+        while (m_image.find()) {
+            news.setImg(m_image.group());
+            break;
+        }
+        System.out.println(news);
         return newsRepository.save(news);
     }
 }

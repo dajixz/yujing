@@ -44,7 +44,6 @@ public class NewsController {
     }
     @PostMapping("/addNews")
     public ResultVo addSolution(News news){
-        System.out.println(news);
         News n= newsService.addNews(news);
         if(n!=null){
             return ResultVo.ok();

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,19 +28,15 @@ public class CaseServiceImpl implements CaseService {
     @Autowired
     private CaseTypeRepository caseTypeRepository;
 
-    @Override
-    @Transactional
-    public Integer updateCaseTypeState(boolean state, Integer id) {
-        return caseTypeRepository.updateCaseTypeState(state,id);
-    }
+
 
     @Override
     @Transactional
-    public InfoVo getCaseKindInfoByIdAndFlag(Integer id, boolean flag) {
+    public InfoVo getCaseKindInfoByIdAndFlag(Integer id, boolean flag,Integer type) {
         InfoVo infoVo = new InfoVo();
         infoVo.setInfo(caseKindRepository.findById(id).get());
-        infoVo.setPrevInfo(caseKindRepository.getPrevCaseKindByNowId(id,flag));
-        infoVo.setNextInfo(caseKindRepository.getNextCaseKindByNowId(id,flag));
+        infoVo.setPrevInfo(caseKindRepository.getPrevCaseKindByNowId(id,flag,type));
+        infoVo.setNextInfo(caseKindRepository.getNextCaseKindByNowId(id,flag,type));
         return infoVo;
     }
 
@@ -78,14 +75,14 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Page<CaseKind> getCaseKindListByFlag(Integer page, Integer size, boolean flag, String type) {
+    public Page<CaseKind> getCaseKindListByFlag(Integer page, Integer size, boolean flag, Integer type) {
         Pageable pageable = PageRequest.of(page-1,size);
         return caseKindRepository.findAllByFlagAndType(pageable, flag, type);
     }
 
     @Override
     public Page<CaseKind> getCaseKindListByFlag(Integer page,Integer size,boolean flag) {
-        Pageable pageable =  PageRequest.of(page-1, size);
+        Pageable pageable =  PageRequest.of(page-1, size, Sort.Direction.DESC,"id");
         return caseKindRepository.findAllByFlag(pageable,flag);
     }
 }

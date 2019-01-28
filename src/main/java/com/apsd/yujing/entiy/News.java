@@ -19,7 +19,7 @@ public class News {
     private String title;
     @Lob
     private String stage;
-    private String type;
+    private int type;
     @Lob
     private String text;
     @Temporal(value = TemporalType.DATE)

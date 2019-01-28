@@ -47,6 +47,7 @@
             <th>来源</th>
             <th>日期</th>
             <th>点击量</th>
+            <th>新闻类别</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -56,6 +57,7 @@
             <td>{{news.author}}</td>
             <td>{{news.date}}</td>
             <td>{{news.click_num}}</td>
+            <td>{{news.type}}</td>
             <td class="td-manage">
                 <a title="查看" :lay-id="news.id" onclick="toShow('/view/news-info',this)" href="javascript:;">
                     <i class="layui-icon">&#xe63c;</i>

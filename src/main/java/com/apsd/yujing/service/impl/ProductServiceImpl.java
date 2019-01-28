@@ -36,10 +36,14 @@ public class ProductServiceImpl implements ProductService {
     private ApplicationGuideRepository applicationGuideRepository;
     @Autowired
     private InstallationProcessRepository installationProcessRepository;
-
     @Override
     @Transactional
-    public ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, String type) throws Exception {
+    public Integer updateProductTypeState(boolean state, Integer id) {
+        return productTypeRepository.updateProductTypeState(state,id);
+    }
+    @Override
+    @Transactional
+    public ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, Integer type) throws Exception {
         Pageable pageable = PageRequest.of(page - 1, size,Sort.Direction.DESC,"id");
         String previous = null;
         String next = null;
@@ -139,7 +143,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public InfoVo getProductInfoByIdAndFlagAndType(Integer id,boolean flag,String type) {
+    public InfoVo getProductInfoByIdAndFlagAndType(Integer id,boolean flag,Integer type) {
         InfoVo infoVo = new InfoVo();
         infoVo.setInfo(productRepository.findById(id).get());
         infoVo.setPrevInfo(productRepository.getPrevProductByNowId(id,flag,type));

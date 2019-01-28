@@ -19,7 +19,15 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
+    @PutMapping("/updateProductTypeState")
+    public ResultVo updateProductTypeState(Integer id,boolean state){
+        Integer integer = productService.updateProductTypeState(!state,id);
+        if(integer!=null){
+            return ResultVo.ok();
+        }else {
+            return ResultVo.build(403,"操作失败~！");
+        }
+    }
     @PutMapping("/updateProduct")
     public ResultVo updateProduct(Product product, ProductDetails productDetails, Integer did) {
         productDetails.setId(did);

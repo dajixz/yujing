@@ -13,5 +13,6 @@ public interface SolutionService {
     Page<Solution> getSolutionListByFlag(Integer page,Integer size,boolean flag);
     void deleteSolutionById(Integer id);
     Solution getSolutionById(Integer id);
-    InfoVo getSolutionInfoByIdAndFlag(Integer id, boolean flag);
+    Page<Solution> getSolutionListByFlagAndType(Integer page,Integer size,boolean flag,Integer type);
+    InfoVo getSolutionInfoByIdAndFlagAndType(Integer id, boolean flag,Integer type);
 }

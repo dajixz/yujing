@@ -16,11 +16,10 @@ public interface CaseService {
     CaseKind addCaseKind(CaseKind caseKind);
     List<CaseType> getCaseTypeListByFlag(boolean flag);
     Page<CaseKind> getCaseKindListByFlag(Integer page,Integer size,boolean flag);
-    Page<CaseKind> getCaseKindListByFlag(Integer page,Integer size,boolean flag,String type);
+    Page<CaseKind> getCaseKindListByFlag(Integer page,Integer size,boolean flag,Integer type);
     void deleteCaseKindById(Integer id);
     void deleteCaseTypeById(Integer id);
     CaseKind getCaseKindById(Integer id);
-    Integer updateCaseTypeState(boolean state,Integer id);
-    InfoVo getCaseKindInfoByIdAndFlag(Integer id, boolean flag);
+    InfoVo getCaseKindInfoByIdAndFlag(Integer id, boolean flag,Integer type);
 
 }

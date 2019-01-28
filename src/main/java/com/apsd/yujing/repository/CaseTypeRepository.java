@@ -15,7 +15,4 @@ import java.util.List;
 public interface CaseTypeRepository extends JpaRepository<CaseType,Integer>{
     List<CaseType> findAllByFlag(boolean flag);
 
-    @Modifying
-    @Query("update CaseType set state = :state where id=:id")
-    Integer updateCaseTypeState(@Param("state")boolean state, @Param("id")int id);
-}
+   }

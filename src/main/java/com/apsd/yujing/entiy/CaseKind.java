@@ -19,7 +19,7 @@ public class CaseKind {
 
     private String name;
 
-    private String type;
+    private int type;
 
     private String imgs;
 

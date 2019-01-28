@@ -20,6 +20,7 @@ layui.use(['form', 'layer', 'laydate','layedit'], function () {
         res.field.date = new Date(res.field.date)
         res.field.stage =layedit.getText(text)
         res.field.text = layedit.getContent(text)
+
         // 发异步，把数据提交
         $.ajax({
             type: 'POST',

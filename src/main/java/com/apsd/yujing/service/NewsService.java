@@ -10,9 +10,9 @@ import org.springframework.data.domain.Page;
  */
 public interface NewsService {
     Page<News> getNewsListByFlag(Integer page,Integer size,boolean flag);
-    Page<News> getNewsListByFlagAndType(Integer page,Integer size,boolean flag,String type);
+    Page<News> getNewsListByFlagAndType(Integer page,Integer size,boolean flag,Integer type);
     News addNews(News news);
     void deleteNewsById(Integer id);
     News getNewsById(Integer id);
-    InfoVo getNewsInfoByIdAndFlagAndType(Integer id, boolean flag,String type);
+    InfoVo getNewsInfoByIdAndFlagAndType(Integer id, boolean flag,Integer type);
 }
