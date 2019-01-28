@@ -33,6 +33,7 @@ public class CaseController {
         }else {
             return ResultVo.build(403,"操作失败！");
         }
+
     }
     @GetMapping("/getCaseKindList")
     public Page<CaseKind> getCaseKindList(Integer page,Integer size, Integer flag){

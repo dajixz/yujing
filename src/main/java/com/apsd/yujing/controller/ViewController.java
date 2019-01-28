@@ -174,7 +174,7 @@ public class ViewController {
     }
     @GetMapping("/problem-add")
     public String toProblemAddView(){
-        return "/problem-add";
+        return "problem-add";
     }
 
     @GetMapping("/process-list")

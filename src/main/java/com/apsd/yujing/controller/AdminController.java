@@ -92,6 +92,7 @@ public class AdminController {
         }
 
     }
+
     @GetMapping("/getRoleList")
     @ResponseBody
     public ResultVo getRoleList(){
@@ -102,6 +103,7 @@ public class AdminController {
             return ResultVo.build(403,"操作失败~");
         }
     }
+
     @DeleteMapping("/deleteRole")
     @ResponseBody
     public ResultVo deleteRole(Integer id){
