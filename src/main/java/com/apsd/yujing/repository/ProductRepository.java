@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * @author 大稽
  * @date2019/1/2020:19
@@ -19,4 +21,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer>{
     Product getPrevProductByNowId(@Param("id")Integer id,@Param("flag")boolean flag,@Param("type")Integer type);
     @Query(value = "select * from product where id < :id and flag=:flag and type=:type order by id desc limit 0,1",nativeQuery = true)
     Product getNextProductByNowId(@Param("id")Integer id,@Param("flag")boolean flag,@Param("type")Integer type);
+
+    @Query(value = "select * from product where flag=:flag and name like:name or text like:text limit 0,5",nativeQuery = true)
+    List<Product> getProductsByFlagAndNameContainingOrTextContaining(@Param("flag") int flag,@Param("name") String name,@Param("text") String text);
 }

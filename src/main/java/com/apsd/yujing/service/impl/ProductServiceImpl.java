@@ -41,6 +41,12 @@ public class ProductServiceImpl implements ProductService {
     public Integer updateProductTypeState(boolean state, Integer id) {
         return productTypeRepository.updateProductTypeState(state,id);
     }
+
+    @Override
+    public List<ProductType> getProductTypeListByFlagAndState(boolean flag, boolean state) {
+        return productTypeRepository.findAllByFlagAndState(flag,state);
+    }
+
     @Override
     @Transactional
     public ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, Integer type) throws Exception {

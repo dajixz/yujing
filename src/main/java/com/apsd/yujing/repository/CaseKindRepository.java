@@ -8,11 +8,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * @author 大稽
  * @date2019/1/1818:09
  */
 public interface CaseKindRepository extends JpaRepository<CaseKind, Integer> {
+
+    @Query(value = "select * from case_kind where flag=:flag and name like:name  limit 0,5",nativeQuery = true)
+    List<CaseKind> getCaseKindsByFlagAndNameContaining(@Param("flag") int flag,@Param("name") String name);
+
     Page<CaseKind> findCaseKindsByTypeAndFlag(Pageable pageable, String caseType, boolean flag);
 
     Page<CaseKind> findAllByFlag(Pageable pageable, boolean flag);

@@ -8,12 +8,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * @author 大稽
  * @date2019/1/2016:28
  */
 public interface NewsRepository extends JpaRepository<News, Integer> {
     Page<News> findAllByFlag(Pageable pageable, boolean flag);
+    @Query(value = "select * from news where flag=:flag and stage like:stage or title like:title limit 0,5",nativeQuery = true)
+    List<News> getNewsByFlagAndStageContainingOrTitleContaining(@Param("flag") int flag,@Param("stage") String stage,@Param("title")String title);
 
     Page<News> findAllByFlagAndType(Pageable pageable, boolean flag, Integer type);
 

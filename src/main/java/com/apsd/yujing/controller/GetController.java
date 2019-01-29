@@ -7,8 +7,10 @@ import com.apsd.yujing.vo.InfoVo;
 import com.apsd.yujing.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
@@ -176,9 +178,22 @@ public class GetController {
             return ResultVo.build(403,"发生未知错误~");
         }
     }
+    @Autowired
+    private SearchService searchService;
 
+    @GetMapping("/search")
+    public ResultVo getSearch(String key,Integer flag){
+        return ResultVo.ok(searchService.getSearch(key,flag));
 
-
+    }
+    @GetMapping("/productTypeShowList")
+    public ResultVo getProductTypeShowList(Integer flag){
+        if(flag==0){
+            return ResultVo.ok(productService.getProductTypeListByFlagAndState(false,true));
+        }else{
+            return ResultVo.ok(productService.getProductTypeListByFlagAndState(true,true));
+        }
+    }
     @GetMapping("/productTypeList")
     public ResultVo getProductType(Integer flag){
         if(flag==0){
@@ -282,7 +297,10 @@ public class GetController {
     @Autowired
     private ContactService contactService;
     @PostMapping("/addContact")
-    public ResultVo addContact(Contact contact){
+    public ResultVo addContact(@Valid Contact contact, BindingResult br){
+        if(br.hasErrors()){
+            return ResultVo.build(403,"操作失败！");
+        }
         Contact c = contactService.addContact(contact);
         if(c!=null){
             return ResultVo.ok();

@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface ProductTypeRepository extends JpaRepository<ProductType,Integer> {
     List<ProductType> findAllByFlag(boolean flag);
+    List<ProductType> findAllByFlagAndState(boolean flag,boolean state);
     @Modifying
     @Query("update ProductType set state = :state where id=:id")
     Integer updateProductTypeState(@Param("state")boolean state, @Param("id")int id);

@@ -32,8 +32,9 @@ public class FileController {
         if(! dir.exists()) {
             dir.mkdir();
         }
-        String key = RandomUtil.getRandomFileName();
-//        String key = file.getOriginalFilename();
+        String fileName=file.getOriginalFilename();
+        String fileTyle=fileName.substring(fileName.lastIndexOf("."),fileName.length());
+        String key = RandomUtil.getRandomFileName()+fileTyle;
         String path = filePath+key;
         File tempFile =  new File(path);
         FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);

@@ -16,6 +16,7 @@ public interface ProductService{
     Product addProduct(Product product, ProductDetails productDetails);
     ProductType addProductType(ProductType productType);
     List<ProductType> getProductTypeListByFlag(boolean flag);
+    List<ProductType> getProductTypeListByFlagAndState(boolean flag,boolean state);
     Page<Product> getProductListByFlag(Integer page,Integer size, boolean flag);
     ProductVo getProductListByFlagAndType(Integer page, Integer size, boolean flag, Integer type)throws Exception;
     void deleteProductById(Integer id);
