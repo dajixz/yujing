@@ -66,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
                 next = productPage0.getContent().get(0).getName();
             }
         }
+        productPage = this.setTypeNameToEachProduct(productPage,productTypeRepository.findAllByFlag(flag));
         return new ProductVo(productPage, previous, next);
     }
 
@@ -111,7 +112,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public SpecificationParameter updateSpecification(SpecificationParameter specificationParameter) {
-        System.out.println(specificationParameter);
         return specificationParameterRepository.save(specificationParameter);
     }
 
@@ -159,7 +159,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(Integer id) {
-        return productRepository.findById(id).get();
+        Product product = productRepository.findById(id).get();
+        List<ProductType> productTypeList = productTypeRepository.findAll();
+        for(ProductType productType:productTypeList){
+            if(product.getType()==productType.getId()){
+                product.setTypeName(productType.getTypeName());
+                break;
+            }
+        }
+        return product;
     }
 
     @Override
@@ -195,9 +203,23 @@ public class ProductServiceImpl implements ProductService {
         return productTypeRepository.findAllByFlag(flag);
     }
 
+
     @Override
     public Page<Product> getProductListByFlag(Integer page, Integer size, boolean flag) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC,"id");
-        return productRepository.findAllByFlag(pageable, flag);
+        Page<Product> productPage = productRepository.findAllByFlag(pageable, flag);
+        List<ProductType> productTypeList = productTypeRepository.findAllByFlag(flag);
+        productPage = setTypeNameToEachProduct(productPage,productTypeList);
+        return productPage;
+    }
+    private Page<Product> setTypeNameToEachProduct(Page<Product> productPage,List<ProductType> productTypeList){
+        for(Product product:productPage.getContent()){
+            for(ProductType productType:productTypeList){
+                if(product.getType()==productType.getId()){
+                    product.setTypeName(productType.getTypeName());
+                }
+            }
+        }
+        return productPage;
     }
 }

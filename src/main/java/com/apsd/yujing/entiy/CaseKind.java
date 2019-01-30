@@ -26,4 +26,6 @@ public class CaseKind {
     @Transient
     private List<String> imgList;
     private boolean flag;
+    @Transient
+    private String typeName;
 }

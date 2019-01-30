@@ -23,5 +23,7 @@ public class Product {
     @Transient
     private List<String> imgList;
     private int type;
+    @Transient
+    private String typeName;
     private boolean flag;
 }

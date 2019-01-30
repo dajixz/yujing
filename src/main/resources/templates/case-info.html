@@ -40,7 +40,8 @@
                 <span class="x-red">*</span>案例类型
             </label>
             <div class="layui-input-block">
-                <input name="type" disabled lay-verify="required" :value="caseKind.type" autocomplete="off" class="layui-input">
+                <input hidden name="typeid" lay-verify="required" :value="caseKind.type" autocomplete="off" >
+                <input disabled :value="caseKind.typeName" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -137,9 +138,13 @@
         form.on('submit(add)', function (res) {
             // 发异步，把数据提交
             res.field.imgs=imgs;
+
+            if(res.field.type==""){
+                res.field.type=res.field.typeid
+            }
             $.ajax({
                 type: 'POST',
-                url: '/admin/addCaseKind',
+                url: '/case/addCaseKind',
                 data: res.field,
                 async: true,
                 success: function (res) {

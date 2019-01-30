@@ -39,6 +39,19 @@
     <button class="layui-btn" onclick="x_admin_show('添加产品','/view/product-add')"><i class="layui-icon"></i>添加</button>
     <button class="layui-btn" @click="getProductList(1,9,0)">中文</button>
     <button class="layui-btn" @click="getProductList(1,9,1)">英文</button>
+    <hr/>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">
+               产品类型
+            </label>
+            <div class="layui-input-block">
+                <select id="type" name="type" lay-filter="on" lay-verify="required">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </form>
     <span class="x-right" style="line-height:40px">共有数据：{{totalElements}}条</span>
     <table id="layui_table_id" class="layui-table">
         <thead>
@@ -53,20 +66,23 @@
         <tbody>
         <tr v-for="product in productList">
             <td>{{product.name}}</td>
-            <td>{{product.type}}</td>
+            <td>{{product.typeName}}</td>
             <td>{{product.price}}</td>
             <td>{{product.batchQuantity}}</td>
             <td class="td-manage">
                 <a title="查看" :lay-id="product.id" onclick="toShow('/view/product-info',this)" href="javascript:;">
                     <i class="layui-icon">&#xe63c;</i>
                 </a>
-                <a title="参数规格" :lay-id="product.id" onclick="toShow('/view/specification-info',this)" href="javascript:;">
+                <a title="参数规格" :lay-id="product.id" onclick="toShow('/view/specification-info',this)"
+                   href="javascript:;">
                     <i class="layui-icon">&#xe62d;</i>
                 </a>
-                <a title="安装流程" :lay-id="product.id" onclick="toShow('/view/installation-process-info',this)" href="javascript:;">
+                <a title="安装流程" :lay-id="product.id" onclick="toShow('/view/installation-process-info',this)"
+                   href="javascript:;">
                     <i class="layui-icon">&#xe656;</i>
                 </a>
-                <a title="应用指南" :lay-id="product.id" onclick="toShow('/view/application-guide-info',this)" href="javascript:;">
+                <a title="应用指南" :lay-id="product.id" onclick="toShow('/view/application-guide-info',this)"
+                   href="javascript:;">
                     <i class="layui-icon">&#xe609;</i>
                 </a>
                 <a title="删除" :lay-id="product.id" onclick="toDel('/product/deleteProduct',this)" href="javascript:;">

@@ -68,8 +68,9 @@
                 <span class="x-red">*</span>产品类型
             </label>
             <div class="layui-input-block">
-                <input disabled name="type" lay-verify="required" :value="product.type" autocomplete="off"
-                       class="layui-input">
+                <input hidden name="typeid" lay-verify="required" :value="product.type" autocomplete="off"
+                       >
+                <input name="" disabled :value="product.typeName" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -260,6 +261,9 @@
         form.on('submit(add)', function (res) {
             res.field.img=img;
             res.field.imgs=imgs;
+            if(res.field.type==""){
+                res.field.type=res.field.typeid
+            }
             $.ajax({
                 type: 'PUT',
                 url: '/product/updateProduct',

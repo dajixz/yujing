@@ -39,6 +39,19 @@
     <button class="layui-btn" onclick="x_admin_show('添加实物案例','/view/case-add')"><i class="layui-icon"></i>添加</button>
     <button class="layui-btn" @click="getCaseKindList(1,6,0)">中文</button>
     <button class="layui-btn" @click="getCaseKindList(1,6,1)">英文</button>
+    <br/>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">
+                案例类型
+            </label>
+            <div class="layui-input-block">
+                <select id="type" name="type" lay-filter="on" lay-verify="required">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </form>
     <span class="x-right" style="line-height:40px">共有数据：{{totalElements}}条</span>
     <table id="layui_table_id" class="layui-table">
         <thead>
@@ -53,7 +66,7 @@
         <tr v-for="caseKind in caseKindList">
             <td>{{caseKind.id}}</td>
             <td>{{caseKind.name}}</td>
-            <td>{{caseKind.type}}</td>
+            <td>{{caseKind.typeName}}</td>
             <td class="td-manage">
                 <a title="查看" :lay-id="caseKind.id" onclick="toShow('/view/case-info',this)" href="javascript:;">
                     <i class="layui-icon">&#xe63c;</i>
