@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/view")
 public class ViewController {
+    @GetMapping("/a")
+    public String toAView(){
+        return "a";
+    }
+
     @GetMapping("/user-list")
     public String toUserListView(){
         return "user-list";

@@ -2,16 +2,22 @@ package com.apsd.yujing.service.impl;
 
 import com.apsd.yujing.config.QiniuConfig;
 import com.apsd.yujing.service.FileService;
+import com.apsd.yujing.utils.RandomUtil;
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -23,6 +29,23 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private QiniuConfig qiniuConfig;
 
+    public Map uploadFilePrev(HttpServletRequest request, MultipartFile file) throws IOException{
+        Map map = new HashMap();
+        String filePath = request.getSession().getServletContext().getRealPath("/") + "upload/";
+        File dir = new File(filePath);
+        if(! dir.exists()) {
+            dir.mkdir();
+        }
+        String fileName=file.getOriginalFilename();
+        String fileTyle=fileName.substring(fileName.lastIndexOf("."),fileName.length());
+        String key = RandomUtil.getRandomFileName()+fileTyle;
+        String path = filePath+key;
+        File tempFile =  new File(path);
+        FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
+        map.put("file",tempFile);
+        map.put("key",key);
+        return map;
+    }
     public String uploadFile(File file ,String key) throws IOException {
         UploadManager uploadManager = new UploadManager();
         try {

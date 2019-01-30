@@ -19,4 +19,5 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String img;
+    private String imgUrl;
 }

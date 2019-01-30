@@ -85,7 +85,7 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public Page<CaseKind> getCaseKindListByFlag(Integer page, Integer size, boolean flag, Integer type) {
-        Pageable pageable = PageRequest.of(page-1,size);
+        Pageable pageable = PageRequest.of(page-1,size, Sort.Direction.DESC,"id");
         Page<CaseKind> caseKindPage = caseKindRepository.findAllByFlagAndType(pageable, flag, type);
         caseKindPage=this.setTypeNameToEachCaseKind(caseKindPage,caseTypeRepository.findAllByFlag(flag));
         return caseKindPage;
