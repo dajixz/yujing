@@ -64,7 +64,7 @@ public class UserController {
         }
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
-        return "/user-edit";
+        return "user-edit";
     }
 
     @GetMapping("/getUserList")
