@@ -39,6 +39,7 @@
                        autocomplete="off" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">
             </label>
@@ -52,6 +53,7 @@
 <script>
     layui.use(['form', 'layer'], function () {
         var form =layui.form,layer=layui.layer;
+
         form.on('submit(add)', function (res) {
             $.ajax({
                 type: 'POST',

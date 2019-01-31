@@ -51,6 +51,9 @@
             <td>{{productType.typeName}}</td>
             <td>{{productType.state==0?'否':'是'}}</td>
             <td class="td-manage">
+                <a title="查看" :lay-id="productType.id" onclick="toShow('/view/product-type-info',this)" href="javascript:;">
+                    <i class="layui-icon">&#xe63c;</i>
+                </a>
                 <a title="开启/关闭" :lay-id="productType.id" :lay-data="productType.state" onclick="toOpen('/product/updateProductTypeState',this)" href="javascript:;">
                     <i class="layui-icon">&#xe605;</i>
                 </a>

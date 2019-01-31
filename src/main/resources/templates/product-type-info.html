@@ -14,6 +14,7 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="/js/vue.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -22,25 +23,23 @@
 </head>
 
 <body>
-<div class="x-body">
-    <form id="form" class="layui-form">
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <input type="radio" name="flag" value="0" title="中文" checked>
-                <input type="radio" name="flag" value="1" title="英文">
-            </div>
-        </div>
+<div  id="layui"  class="x-body">
+    <form class="layui-form">
+        <input hidden name="id" :value="productType.id">
         <div class="layui-form-item">
             <label for="typeName" class="layui-form-label">
                 <span class="x-red">*</span>类别名称
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="typeName" name="typeName" lay-verify="required"
+                <input type="text" id="typeName" name="typeName" :value="productType.typeName" lay-verify="required"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <button type="button" class="layui-btn" id="upload">类别图片上传</button>
+            <div v-if="productType.img">
+                <img style="height: 200px;width:200px" :src="productType.img">
+            </div>
+            <button type="button" class="layui-btn" id="upload">类别图片修改</button>
             <div id="div"></div>
         </div>
         <div class="layui-form-item">
@@ -54,17 +53,49 @@
 </div>
 </body>
 <script>
-    layui.use(['form', 'layer','upload'], function () {
-        var form = layui.form, layer = layui.layer,upload=layui.upload;
+    layui.use(['form', 'layer', 'upload'], function () {
+        var form = layui.form, layer = layui.layer, upload = layui.upload;
+        var img;
+
+        var app = new Vue({
+            el: '#layui',
+            data: {
+                productType: "",
+            },
+            beforeMount: function () {
+                var id = parent.layer.idnum;
+                this.getProductTypeById(id);
+            },
+            methods: {
+                getProductTypeById: function (id) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/product/getProductType',
+                        data: {
+                            id: id
+                        },
+                        async: true,
+                        success: function (res) {
+                            if (res.code == 200) {
+                                app.productType = res.data;
+                                img = app.productType.img
+                            }
+                        }
+                    })
+                }
+            }
+        })
         var upload = upload.render({
             elem: '#upload'
             , url: '/upload'
-            ,acceptMime:'image/*'
+            , acceptMime: 'image/*'
             , multiple: true
             , done: function (res, index, upload) {
                 if (res.code == 0) {//上传成功
+                    img = ""
                     $('#div').append("<img style='height:120px;width: 120px' src=\"" + res.data.src + "\" >")
-                    $('#form').append("<input hidden name='img' value='"+res.data.src+"'>");
+                    // $('#form').append("<input hidden name='img' value='"+res.data.src+"'>");
+                    img = res.data.src
                 }
             } //code为后台传回来的数据，具体多少自己定，
             //后台只能传回json格式数据，不然会走error函数；
@@ -74,7 +105,7 @@
             }
         });
         form.on('submit(add)', function (res) {
-            console.log(res.field)
+            res.field.img = img;
             $.ajax({
                 type: 'POST',
                 url: '/product/addProductType',

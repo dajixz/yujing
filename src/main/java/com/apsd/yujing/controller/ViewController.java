@@ -18,7 +18,10 @@ public class ViewController {
     public String toAView(){
         return "a";
     }
-
+    @GetMapping("/product-type-info")
+    public String toProductTypeInfoView(){
+        return "product-type-info";
+    }
     @GetMapping("/user-list")
     public String toUserListView(){
         return "user-list";

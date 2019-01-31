@@ -203,6 +203,10 @@ public class ProductServiceImpl implements ProductService {
         return productTypeRepository.findAllByFlag(flag);
     }
 
+    @Override
+    public ProductType getProductTypeById(Integer id) {
+        return productTypeRepository.findById(id).get();
+    }
 
     @Override
     public Page<Product> getProductListByFlag(Integer page, Integer size, boolean flag) {

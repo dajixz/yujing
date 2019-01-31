@@ -12,7 +12,7 @@ import java.util.List;
  * @date2019/1/2019:49
  */
 public interface ProductService{
-
+    ProductType getProductTypeById(Integer id);
     Product addProduct(Product product, ProductDetails productDetails);
     ProductType addProductType(ProductType productType);
     List<ProductType> getProductTypeListByFlag(boolean flag);

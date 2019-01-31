@@ -38,7 +38,15 @@ public class ProductController {
             return ResultVo.build(403, "操作失败！");
         }
     }
-
+    @GetMapping("/getProductType")
+    public ResultVo getProductType(Integer id){
+        ProductType product = productService.getProductTypeById(id);
+        if(product!=null){
+            return ResultVo.ok(product);
+        }else {
+            return ResultVo.build(403,"操作失败~");
+        }
+    }
     @GetMapping("/getProductList")
     public ResultVo getProductList(Integer page, Integer size, Integer flag) {
         if (flag == 0) {

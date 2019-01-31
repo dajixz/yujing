@@ -20,4 +20,5 @@ public class ProductType {
     private String typeName;
     private boolean flag;
     private boolean state;
+    private String img;
 }

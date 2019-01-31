@@ -231,7 +231,7 @@
             , done: function (res, index, upload) {
                 if (res.code == 0) {//上传成功
                     imgs=""
-                    $('#div1').append("<img style='height:120px;width: 120px' src=\"" + res.data.src + "\" >")
+                    $('#div1').append("<img style='height:200px;width: 200px' src=\"" + res.data.src + "\" >")
                     $('#form').append("<input hidden name='imgList[]' value='"+res.data.src+"'>");
                 }
             } //code为后台传回来的数据，具体多少自己定，
