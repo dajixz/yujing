@@ -14,6 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/view")
 public class ViewController {
+
+    @GetMapping("/information-info")
+    public String toInformationInfoView(){
+        return "information-info";
+    }
+    @GetMapping("/information-list")
+    public String toInformationListView(){
+        return "information-list";
+    }
     @GetMapping("/a")
     public String toAView(){
         return "a";

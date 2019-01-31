@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author 大稽
@@ -38,9 +39,9 @@ public class RbacServiceImpl implements RbacService {
             List<String> urls = new ArrayList<>();
             String userId = ((UserDetails) principal).getUsername();
             User user = userRepository.findById(userId).get();
-            List<Role> roles = user.getRoleList();
+            Set<Role> roles = user.getRoleList();
             for (Role role: roles) {
-                List<Permission> permissions = role.getPermissionList();
+                Set<Permission> permissions = role.getPermissionList();
                 for(Permission permission:permissions){
                     String url = permission.getUrl();
                     if(url.contains(",")){

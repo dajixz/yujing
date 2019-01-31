@@ -45,6 +45,17 @@ public class GetController {
     @Autowired
     private EnvironmentalService environmentalService;
     @Autowired VideoService videoService;
+    @Autowired
+    private InformationService informationService;
+    @GetMapping("/information")
+    public ResultVo getInformation(){
+        Information i = informationService.getInformation();
+        if(i!=null){
+            return ResultVo.ok(i);
+        }else {
+            return ResultVo.build(403,"操作失败~");
+        }
+    }
     @GetMapping("/support")
     public ResultVo getSupport(Integer flag){
         try {

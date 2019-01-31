@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author 大稽
@@ -18,6 +19,7 @@ import java.util.List;
 public class User implements Serializable,UserDetails {
 
     private static final long serialVersionUID = -7860082702490843527L;
+
     @Id
     private String userId;
     private String userName;
@@ -26,7 +28,7 @@ public class User implements Serializable,UserDetails {
     private List<Integer> roles;
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "user_role",joinColumns = {@JoinColumn(name = "user_id")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<Role> roleList ;
+    private Set<Role> roleList ;
 
     public void setUserName(String userName) {
         this.userName = userName;

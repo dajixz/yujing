@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author 大稽
@@ -43,7 +45,7 @@ public class AdminController {
     @GetMapping("/role-edit/{id}")
     public String toRoleEditView(@PathVariable("id") Integer id, Model model) {
         Role role = roleService.getRoleByRoleId(id);
-        List<Permission> permissionList = role.getPermissionList();
+        Set<Permission> permissionList = role.getPermissionList();
         List<Integer> flagList = new ArrayList<>();
         for (Permission permission : permissionList) {
             int permissionId = permission.getPermissionId();
@@ -64,7 +66,7 @@ public class AdminController {
     @ResponseBody
     public ResultVo updateRole(Role role) {
         List<Integer> permissions = role.getPermissions();
-        List<Permission> permissionList = new ArrayList<>();
+        Set<Permission> permissionList = new HashSet<>();
         if (permissions != null) {
             for (Integer permissionId : permissions) {
                 if (permissionId != null) {

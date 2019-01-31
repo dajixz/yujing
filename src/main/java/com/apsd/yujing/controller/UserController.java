@@ -14,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author 大稽
@@ -47,7 +49,7 @@ public class UserController {
     @GetMapping("/user-edit/{id}")
     public String toUserEditView(@PathVariable("id") String id, Model model) {
         User user = userService.getUserByUserId(id);
-        List<Role> roleList = user.getRoleList();
+        Set<Role> roleList = user.getRoleList();
         List<Integer> flagList = new ArrayList<>();
         for (Role role : roleList) {
             int roleId = role.getRoleId();
@@ -96,7 +98,7 @@ public class UserController {
     @ResponseBody
     public ResultVo updateUser(User user) {
         List<Integer> roles = user.getRoles();
-        List<Role> roleList = new ArrayList<>();
+        Set<Role> roleList = new HashSet<>();
         if (roles != null) {
             for (Integer roleId : roles) {
                 if (roleId != null) {
@@ -106,7 +108,6 @@ public class UserController {
             }
         }
         user.setRoleList(roleList);
-
         User user1 = userService.editUser(user);
         if (user1 != null) {
             return ResultVo.ok();

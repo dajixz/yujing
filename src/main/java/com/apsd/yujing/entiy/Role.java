@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author 大稽
@@ -23,7 +24,7 @@ public class Role implements Serializable{
 
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "role_permission",joinColumns = {@JoinColumn(name = "permission_id")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<Permission> permissionList;
+    private Set<Permission> permissionList;
 
     @Transient
     private boolean flag;

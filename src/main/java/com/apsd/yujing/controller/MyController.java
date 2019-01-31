@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author 大稽
@@ -29,22 +31,25 @@ public class MyController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+
     @GetMapping("/info")
-    public String toMyInfoView(Model model,@AuthenticationPrincipal UserDetails user1){
+    public String toMyInfoView(Model model, @AuthenticationPrincipal UserDetails user1) {
         User user = userService.getUserByUserId(user1.getUsername());
-        System.out.println(user);
         model.addAttribute("user", user);
-        return "/my-info";
+        return "my-info";
     }
+
     @PutMapping("/updateUser")
     @ResponseBody
-    public ResultVo updateUser(User user){
+    public ResultVo updateUser(User user) {
         List<Integer> roles = user.getRoles();
-        List<Role> roleList = new ArrayList<>();
+        Set<Role> roleList = new HashSet<>();
         if (roles != null) {
             for (Integer roleId : roles) {
-                Role roleByRoleId = roleService.getRoleByRoleId(roleId);
-                roleList.add(roleByRoleId);
+                if (roleId != null) {
+                    Role roleByRoleId = roleService.getRoleByRoleId(roleId);
+                    roleList.add(roleByRoleId);
+                }
             }
         }
         user.setRoleList(roleList);
@@ -52,7 +57,7 @@ public class MyController {
         if (user1 != null) {
             return ResultVo.ok();
         } else {
-            return ResultVo.build(403,"操作失败");
+            return ResultVo.build(403, "操作失败");
         }
     }
 }

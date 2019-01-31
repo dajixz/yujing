@@ -72,7 +72,6 @@
         var form = layui.form;
         var layer = layui.layer;
         form.on('submit(add)', function (res) {
-            console.log(res.field)
             $.ajax({
                 type: 'PUT',
                 url: '/my/updateUser',
