@@ -14,4 +14,7 @@ import java.util.Map;
 public interface FileService {
     String uploadFile(File file, String key)throws IOException;
     Map uploadFilePrev(HttpServletRequest request, MultipartFile file) throws IOException;
+    String uploadFile(byte[] b,String filePath,String fileName,String prev);
+    //上传文件的前步骤
+    Map<String,String> uploadFilePrev(MultipartFile file)throws IOException;
 }

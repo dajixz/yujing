@@ -23,72 +23,117 @@
 
 <body>
 <div class="x-body">
-    <form id="form" action="/video/add" method="post" enctype="multipart/form-data">
-        <input id="file" name="file" type="file" value="" placeholder="点击上传"/>
-        <div class="row">
-            <div id="video" class="w50"></div>
-            <div id="imgSmallView" class="w50"></div>
+    <form id="form" class="layui-form">
+        <div class="layui-form-item">
+            <button type="button" class="layui-btn" id="upload">
+                <i class="layui-icon">&#xe67c;</i>单视频上传
+            </button>
         </div>
+        <div id="video"></div>
+        <div id="imgSmallView"></div>
+
         <!--<div class="layui-form-item">-->
-            <!--<button type="button" class="layui-btn" id="upload">-->
-                <!--<i class="layui-icon">&#xe67c;</i>单视频上传-->
-            <!--</button>-->
-            <!--<div id="div"></div>-->
-            <!--<div id="imgSmallView"></div>-->
+        <!--<button type="button" class="layui-btn" id="upload">-->
+        <!--<i class="layui-icon">&#xe67c;</i>单视频上传-->
+        <!--</button>-->
+        <!--<div id="div"></div>-->
+        <!--<div id="imgSmallView"></div>-->
         <!--</div>-->
-        <button id="btn" class="layui-btn" type="submit" onclick="wait()" value="提交">提交</button>
+        <button class="layui-btn" lay-filter="add" lay-submit="">
+            提交
+        </button>
     </form>
 </div>
 </body>
 <script>
-    layui.use('layer', function () {
-       var layer = layui.layer
-    })
-    function wait() {
-        layer.alert("上传中~~请稍等~~",{time:4000})
-    }
-    (function () {
-        $('#file').on('change', function () {
-            var files = this.files,
-                video = $('#video').find('video'),
-                videoURL = null,
-                windowURL = window.URL || window.webkitURL;
-            ;
-            if (files && files[0]) {
-                videoURL = windowURL.createObjectURL(files[0]);
-                $('#video').html('<video src="' + videoURL + '" controls="controls"></video>');
-                setTimeout(function () {
-                    createIMG();
-                }, 500);
-
-            }
-        }).trigger('change');
-
-        var createIMG = function () {
-            var scale = 0.25,
-                video = $('#video').find('video')[0],
-                canvas = document.createElement("canvas"),
-                canvasFill = canvas.getContext('2d');
-            canvas.width = video.videoWidth * scale;
-            canvas.height = video.videoHeight * scale;
-            canvasFill.drawImage(video, 0, 0, canvas.width, canvas.height);
-            var src = canvas.toDataURL("image/jpeg");
-            $('#imgSmallView').html('<img id="imgSmallView" src="' + src + '" alt="预览图" />');
-            $('#form').append("<input hidden name='img' value='"+src+"'/>")
-        }
-
-    })()
-    var createIMG = function () {
+    function createIMG() {
         var scale = 0.25,
-            video = $('#div').find('video')[0],
+            video = $('#video').find('video')[0],
             canvas = document.createElement("canvas"),
             canvasFill = canvas.getContext('2d');
+
         canvas.width = video.videoWidth * scale;
         canvas.height = video.videoHeight * scale;
         canvasFill.drawImage(video, 0, 0, canvas.width, canvas.height);
         var src = canvas.toDataURL("image/jpeg");
         $('#imgSmallView').html('<img id="imgSmallView" src="' + src + '" alt="预览图" />');
+        $('#form').append("<input hidden name='imgUrl' value='" + src + "'/>")
     }
+
+    layui.use(['layer', 'form', 'upload'], function () {
+        var layer = layui.layer, form = layui.form, upload = layui.upload;
+        var upload = upload.render({
+            elem: '#upload'
+            , url: '/upload',
+            accept: 'video',
+            acceptMime: 'video/*'
+            , done: function (res, index, upload) {
+                if (res.code == 0) {//上传成功
+                    $('#video').html("<video style='height: 400px;width: 400px' src=\"" + res.data.src + "\" controls=\"controls\">");
+                    $('#form').append("<input hidden name='img' value='" + res.data.src + "'/>")
+                    setTimeout(function () {
+                        createIMG();
+                    }, 2000);
+                }
+            } //code为后台传回来的数据，具体多少自己定，
+            //后台只能传回json格式数据，不然会走error函数；
+            , error: function (index, upload) {
+                console.log("index:" + index)
+                console.log("upload:" + upload)
+            }
+        });
+        form.on('submit(add)', function (res) {
+            console.log(res.field)
+            if (res.field.img == null) {
+                layer.msg("请上图视频后提交");
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/video/add',
+                data: res.field,
+                async: true,
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.alert(res.msg, {icon: 6}, function () {
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                            window.parent.location.reload();
+                        });
+                    } else if (res.code == 403) {
+                        layer.msg(res.msg);
+                        return;
+                    }
+                }
+            })
+            return false;
+        })
+    })
+
+    function wait() {
+        layer.alert("上传中~~请稍等~~", {time: 4000})
+    }
+
+    // (function () {
+    //     $('#file').on('change', function () {
+    //         var files = this.files,
+    //             video = $('#video').find('video'),
+    //             videoURL = null,
+    //             windowURL = window.URL || window.webkitURL;
+    //         ;
+    //         if (files && files[0]) {
+    //             videoURL = windowURL.createObjectURL(files[0]);
+    //             $('#video').html('<video src="' + videoURL + '" controls="controls"></video>');
+    //             setTimeout(function () {
+    //                 createIMG();
+    //             }, 500);
+    //
+    //         }
+    //     }).trigger('change');
+
+
     // layui.use(['form', 'layer'], function () {
     //     var form = layui.form, layer = layui.layer, upload = layui.upload;
     //     // var upload = upload.render({

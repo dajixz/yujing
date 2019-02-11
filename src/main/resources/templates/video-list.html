@@ -40,14 +40,12 @@
     <table id="layui_table_id" class="layui-table">
         <thead>
         <tr>
-            <th>视频ID</th>
             <th>公司视频</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="video in videoList">
-            <td>{{video.id}}</td>
             <td>{{video.img}}</td>
             <td class="td-manage">
                 <!--<a title="查看" :lay-id="video.id" onclick="toUpdataShow('/view/',this)" href="javascript:;">-->
