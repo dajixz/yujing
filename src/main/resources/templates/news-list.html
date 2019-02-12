@@ -31,14 +31,16 @@
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body" id="layui">
-    <div class="layui-input-inline">
-        <input id="goodsName" type="text" name="goodsName" placeholder="" autocomplete="off"
-               lay-verify="required" class="layui-input">
-    </div>
-    <button class="layui-btn" @click="searchGoodsList(1)"><i class="layui-icon">&#xe615;</i></button>
+
     <button class="layui-btn" onclick="x_admin_show('添加新闻','/view/news-add')"><i class="layui-icon"></i>添加</button>
     <button class="layui-btn" @click="getNewsList(1,3,0)">中文</button>
     <button class="layui-btn" @click="getNewsList(1,3,1)">英文</button>
+    <button class="layui-btn" @click="getNewsListByType(1,3,0,1)">c公司新闻</button>
+    <button class="layui-btn" @click="getNewsListByType(1,3,0,2)">c行业新闻</button>
+    <button class="layui-btn" @click="getNewsListByType(1,3,0,3)">c客户反响</button>
+    <button class="layui-btn" @click="getNewsListByType(1,3,1,1)">e公司新闻</button>
+    <button class="layui-btn" @click="getNewsListByType(1,3,1,2)">e行业新闻</button>
+    <button class="layui-btn" @click="getNewsListByType(1,3,1,3)">e客户反响</button>
     <span class="x-right" style="line-height:40px">共有数据：{{totalElements}}条</span>
     <table id="layui_table_id" class="layui-table">
         <thead>

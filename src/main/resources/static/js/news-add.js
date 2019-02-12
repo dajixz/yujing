@@ -10,7 +10,9 @@ layui.use(['form', 'layer', 'laydate','layedit'], function () {
             ,type: 'POST' //默认post
         }
     })
-    var text = layedit.build('text');
+    var text = layedit.build('text',{
+        height: "650",
+    });
     laydate.render({
         elem: "#date"
     });

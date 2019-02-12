@@ -44,27 +44,27 @@
 </div>
 </body>
 <script>
-    layui.use(['form', 'layer','layedit'], function () {
+    layui.use(['form', 'layer', 'layedit'], function () {
         $ = layui.jquery;
-        var form = layui.form,layer = layui.layer,layedit=layui.layedit;
+        var form = layui.form, layer = layui.layer, layedit = layui.layedit;
         var text;
         var app = new Vue({
             el: '#layui',
             data: {
-                culture:"",
+                culture: "",
             },
             beforeMount: function () {
                 var id = parent.layer.idnum;
                 this.getCultureById(id);
             },
             methods: {
-                getCultureById:function (id) {
+                getCultureById: function (id) {
                     $.ajax({
                         type: 'GET',
                         url: '/culture/getCulture',
                         dataType: 'json',
                         data: {
-                            id:id,
+                            id: id,
                         },
                         async: true,
                         success: function (res) {
@@ -77,11 +77,12 @@
                             layedit.set({
                                 uploadImage: {
                                     url: '/upload' //接口url
-                                    ,type: 'POST' //默认post
+                                    , type: 'POST' //默认post
                                 }
                             })
-                             text = layedit.build('text',{
-                                tool: ['strong', 'italic', 'underline', '|','left', 'center', 'right','image']
+                            text = layedit.build('text', {
+                                height: "650",
+                                tool: ['strong', 'italic', 'underline', '|', 'left', 'center', 'right', 'image']
                             });
                         }
                     })
@@ -95,7 +96,7 @@
             res.field.content = layedit.getText(text)
             $.ajax({
                 type: 'POST',
-                url: '/admin/addCulture',
+                url: '/culture/addCulture',
                 data: res.field,
                 async: true,
                 success: function (res) {

@@ -114,11 +114,7 @@
                 success: function (res) {
                     if (res.code == 200) {
                         layer.alert(res.msg, {icon: 6}, function () {
-                            // 获得frame索引
-                            var index = parent.layer.getFrameIndex(window.name);
-                            //关闭当前frame
-                            parent.layer.close(index);
-                            window.parent.location.reload();
+                            window.location.reload();
                         });
                     } else if (res.code == 403) {
                         layer.msg(res.msg);

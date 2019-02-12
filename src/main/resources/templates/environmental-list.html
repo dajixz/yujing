@@ -48,11 +48,8 @@
         <tbody>
         <tr v-for="environmental in environmentalList">
             <td>{{environmental.id}}</td>
-            <td><img :src="environmental.img" style="height: 50px"></td>
+            <td><img :src="environmental.img" style="height: 100px"></td>
             <td class="td-manage">
-                <a title="查看" :lay-id="environmental.id" onclick="toUpdataShow('/view/getGoods',this)" href="javascript:;">
-                    <i class="layui-icon">&#xe63c;</i>
-                </a>
                 <a title="删除" :lay-id="environmental.id" onclick="toDel('/environmental/deleteEnvironmental',this)" href="javascript:;">
                     <i class="layui-icon">&#xe640;</i>
                 </a>

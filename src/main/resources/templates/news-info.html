@@ -56,15 +56,15 @@
             <label class="layui-form-label">新闻类型</label>
             <div class="layui-input-inline">
                 <input id="type" name="type" disabled lay-verify="required" :value="news.type" autocomplete="off"
-                       class="layui-input">
+                       class="layui-input">{{news.typeName}}
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">修改类型</label>
             <div class="layui-input-block">
-                <input type="radio" name="type" value="公司新闻" title="公司新闻">
-                <input type="radio" name="type" value="行业新闻" title="行业新闻">
-                <input type="radio" name="type" value="客户反响" title="客户反响">
+                <input type="radio" name="type" value="1" title="公司新闻">
+                <input type="radio" name="type" value="2" title="行业新闻">
+                <input type="radio" name="type" value="3" title="客户反响">
             </div>
         </div>
         <div class="layui-form-item">
@@ -115,6 +115,13 @@
                                 return;
                             }
                             app.news = res.data;
+                            if(app.news.type==1){
+                                app.news.typeName="公司新闻"
+                            }else if(app.news.type==2){
+                                app.news.typeName="行业新闻"
+                            }else if(app.news.type==3){
+                                app.news.typeName="客户反响"
+                            }
                             laydate.render({
                                 elem: '#date',
                                 value: new Date(res.data.date)
@@ -127,6 +134,7 @@
                                 }
                             })
                             text = layedit.build('text', {
+                                height: "650",
                                 tool: ['strong', 'italic', 'underline', '|', 'left', 'center', 'right', 'image']
                             });
 
