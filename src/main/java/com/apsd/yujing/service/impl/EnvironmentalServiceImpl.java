@@ -27,8 +27,13 @@ public class EnvironmentalServiceImpl implements EnvironmentalService {
     }
 
     @Override
-    public List<Environmental> addEnvironmental(List<Environmental> environmentalList) {
-        return environmentalRepository.saveAll(environmentalList);
+    public Environmental getEnvironmentalById(Integer id) {
+        return environmentalRepository.findById(id).get();
+    }
+
+    @Override
+    public Environmental addEnvironmental(Environmental environmental) {
+        return environmentalRepository.save(environmental);
     }
 
     @Override

@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="/css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/js/xadmin.js"></script>
     <script type="text/javascript" src="/js/vue.js"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -23,53 +23,25 @@
 </head>
 
 <body>
-<div id="layui" class="x-body">
+<div class="x-body" id="layui">
     <form id="form" class="layui-form">
-        <input hidden name="id" :value="process.id">
-        <input hidden name="img" :value="process.img">
-        <div class="layui-form-item">
-            <label for="num" class="layui-form-label">
-                <span class="x-red">*</span>流程序号
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="num" name="num" lay-verify="required"
-                       :value="process.num" autocomplete="off" class="layui-input">
-            </div>
+        <input hidden name="id" :value="environmental.id">
+        <div v-if="environmental.img">
+            <img style="height: 200px;width:200px" :src="environmental.img">
         </div>
         <div class="layui-form-item">
-            <label for="title" class="layui-form-label">
-                <span class="x-red">*</span>流程标题
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="title" name="title" lay-verify="required"
-                       :value="process.title" autocomplete="off" class="layui-input">
-            </div>
+            <button type="button" class="layui-btn" id="upload">
+                <i class="layui-icon">&#xe67c;</i>单图片覆盖
+            </button>
+            <div id="div"></div>
         </div>
         <div class="layui-form-item">
-            <label for="english" class="layui-form-label">
-                <span class="x-red">*</span>标题英文
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="english" name="english" lay-verify="required"
-                       :value="process.english" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="x-red">*</span>流程图片
-            </label>
-            <span id="div" v-if="process.img">
-                <img style="width:100px;height: 100px" :src="process.img">
-            </span>
-            <button id="upload" type="button" class="layui-btn">修改图片</button>
-        </div>
-        <div class="layui-form-item">
-            <label for="text" class="layui-form-label">
-                <span class="x-red">*</span>流程内容
+            <label for="name" class="layui-form-label">
+                <span class="x-red">*</span>环境名称
             </label>
             <div class="layui-input-block">
-                <textarea class="layui-textarea" name="text" id="text" :value="process.text">
-                </textarea>
+                <input type="text" id="name" name="name" lay-verify="required" :value="environmental.name"
+                       autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -83,23 +55,23 @@
 </div>
 </body>
 <script>
-    layui.use(['form', 'layer', 'upload',], function () {
-        $ = layui.jquery;
-        var form = layui.form, layer = layui.layer, upload = layui.upload
+    layui.use(['form', 'layer','upload'], function () {
+        var form =layui.form,layer=layui.layer,upload=layui.upload;
+        var img;
         var app = new Vue({
             el: '#layui',
             data: {
-                process: "",
+                environmental: "",
             },
             beforeMount: function () {
                 var id = parent.layer.idnum;
-                this.getProcessById(id);
+                this.getEnvironmental(id);
             },
             methods: {
-                getProcessById: function (id) {
+                getEnvironmental:function (id) {
                     $.ajax({
                         type: 'GET',
-                        url: '/process/getProcess',
+                        url: '/environmental/getEnvironmental',
                         dataType: 'json',
                         data: {
                             id: id,
@@ -110,22 +82,20 @@
                                 layer.msg(res.msg)
                                 return;
                             }
-                            app.process = res.data;
-                            console.log(app.process.id)
+                            app.environmental = res.data;
+                            img = app.environmental.img
                         }
                     })
                 }
             }
         })
-        var up = upload.render({
+        var upload = upload.render({
             elem: '#upload'
             , url: '/upload'
-            ,acceptMime:'image/*'
-            , multiple: true
             , done: function (res, index, upload) {
                 if (res.code == 0) {//上传成功
-                    $('#div').html("<img style='height:120px;width: 120px' src=\"" + res.data.src + "\" >")
-                    $('#form').append("<input hidden name='img' value='"+res.data.src+"'>");
+                    $('#div').append("<img style='height: 120px' src=\"" + res.data.src + "\" >");
+                    img = res.data.src
                 }
             } //code为后台传回来的数据，具体多少自己定，
             //后台只能传回json格式数据，不然会走error函数；
@@ -134,12 +104,11 @@
                 console.log("upload:" + upload)
             }
         });
-        //监听提交
         form.on('submit(add)', function (res) {
-            //发异步，把数据提交
+            res.field.img = img;
             $.ajax({
-                type: 'PUT',
-                url: '/process/updateProcess',
+                type: 'POST',
+                url: '/environmental/addEnvironmental',
                 data: res.field,
                 async: true,
                 success: function (res) {
@@ -154,7 +123,7 @@
                 }
             })
             return false;
-        });
-    });
+        })
+    })
 </script>
 </html>

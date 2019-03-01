@@ -40,16 +40,19 @@
     <table id="layui_table_id" class="layui-table">
         <thead>
         <tr>
-            <th>图片ID</th>
             <th>环境图片</th>
+            <th>图片名称</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="environmental in environmentalList">
-            <td>{{environmental.id}}</td>
             <td><img :src="environmental.img" style="height: 100px"></td>
+            <td>{{environmental.name}}</td>
             <td class="td-manage">
+                <a title="查看" :lay-id="environmental.id" onclick="toShow('/view/environmental-info',this)" href="javascript:;">
+                    <i class="layui-icon">&#xe63c;</i>
+                </a>
                 <a title="删除" :lay-id="environmental.id" onclick="toDel('/environmental/deleteEnvironmental',this)" href="javascript:;">
                     <i class="layui-icon">&#xe640;</i>
                 </a>

@@ -10,7 +10,8 @@ import java.util.List;
  * @date2019/1/2111:37
  */
 public interface EnvironmentalService {
-    List<Environmental> addEnvironmental(List<Environmental> environmentalList);
+    Environmental addEnvironmental(Environmental environmental);
     Page<Environmental> getEnvironmentalList(Integer page,Integer size);
     void deleteEnvironmentalById(Integer id);
+    Environmental getEnvironmentalById(Integer id);
 }

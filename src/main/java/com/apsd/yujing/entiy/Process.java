@@ -15,7 +15,7 @@ public class Process {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int num;
+    private String num;
     private String title;
     private String english;
     private String img;

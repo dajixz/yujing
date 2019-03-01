@@ -18,6 +18,7 @@ public class Environmental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String img;
+    private String name;
     @Transient
     private List<String> imgList;
     public Environmental() {

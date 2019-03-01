@@ -18,30 +18,33 @@ import java.util.List;
 public class EnvironmentalController {
     @Autowired
     private EnvironmentalService environmentalService;
+
     @DeleteMapping("/deleteEnvironmental")
-    public ResultVo deleteEnvironmental( Integer id){
+    public ResultVo deleteEnvironmental(Integer id) {
         try {
             environmentalService.deleteEnvironmentalById(id);
             return ResultVo.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
+            return ResultVo.build(403, "操作失败！");
+        }
+    }
+    @GetMapping("/getEnvironmental")
+    public ResultVo getEnvironmental(Integer id) {
+        Environmental e= environmentalService.getEnvironmentalById(id);
+        if(e!=null){
+            return ResultVo.ok(e);
+        }else {
             return ResultVo.build(403,"操作失败！");
         }
     }
+
     @PostMapping("/addEnvironmental")
-    public ResultVo addEnvironmental(Environmental environmental){
-        List<String> imgList = environmental.getImgList();
-        if(imgList==null){
-            return ResultVo.build(403,"操作失败！");
-        }
-        List<Environmental> environmentalList = new ArrayList<>();
-        for (String img :imgList){
-            environmentalList.add(new Environmental(img));
-        }
-        List<Environmental> e = environmentalService.addEnvironmental(environmentalList);
-        if(e!=null){
+    public ResultVo addEnvironmental(Environmental environmental) {
+        Environmental e = environmentalService.addEnvironmental(environmental);
+        if (e != null) {
             return ResultVo.ok();
-        }else {
-            return ResultVo.build(403,"操作失败！");
+        } else {
+            return ResultVo.build(403, "操作失败！");
         }
 
     }

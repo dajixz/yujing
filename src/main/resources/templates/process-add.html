@@ -35,7 +35,7 @@
                 <span class="x-red">*</span>流程序号
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="num" name="num" lay-verify="number"
+                <input type="text" id="num" name="num" lay-verify="required"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -109,7 +109,7 @@
             // 发异步，把数据提交
             if (res.field.img == null) {
                 layer.msg("请上传图片后提交")
-                return;
+                return false;
             }
             $.ajax({
                 type: 'POST',
@@ -117,15 +117,15 @@
                 data: res.field,
                 async: true,
                 success: function (res) {
-                    if (res.code == 200) {
+                    if(res.code==200){
                         layer.alert(res.msg, {icon: 6}, function () {
                             // 获得frame索引
                             var index = parent.layer.getFrameIndex(window.name);
                             //关闭当前frame
                             parent.layer.close(index);
-                            window.parent.location.reload();
+                            // window.parent.location.reload();
                         });
-                    } else if (res.code == 403) {
+                    }else if(res.code==403){
                         layer.msg(res.msg);
                         return;
                     }
